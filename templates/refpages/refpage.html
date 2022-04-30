@@ -1,0 +1,29 @@
+{% extends 'refpages/base.html'%}
+{% load static %}
+{% block content %}
+  <div class = "container">
+    <div class = "text-center container">
+      <br>
+      <h2 class = "text-center">Search for your favorite link</h2>
+      <br>
+    </div>
+    <br><br>
+    <div class="row">
+      {% for link in all_links %}
+        <div class="col-md-4 col-sm-6 col-lg-3">
+          <div class="card">
+            <img class="card-img-top" src="{{ meal.image_url }}" alt="Card image cap">
+            <div class="card-body text-center">
+              <p class="card-title">{{ link.url_from }}</p>
+              <hr>
+              <p class="card-text">{{ link.ahrefs_rank }}</p>
+              <hr>
+              <p class="card-text">{{ link.domain_rating }}</p>
+            </div>
+          </div>
+          <br><br><br>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
