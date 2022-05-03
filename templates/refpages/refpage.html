@@ -10,26 +10,24 @@
     <br><br>
 
     <form action = "" method="post">
-          {{ home_form }}
-      </form>
-
-
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">URL Link</th>
-          <th scope="col">Ahrefs Rank</th>
-          <th scope="col">Domain Rating</th>
-        </tr>
-      </thead>
-    <tbody>
-        {% for link in all_links %}
-          <tr>
-            <td>{{ link.url_from }}</td>
-            <td>{{ link.ahrefs_rank }}</td>
-            <td>{{ link.domain_rating }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+        {{ home_form }}
+    </form>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">URL Link</th>
+      <th scope="col">Ahrefs Rank</th>
+      <th scope="col">Domain Rating</th>
+    </tr>
+  </thead>
+<tbody>
+    {% for link in all_links %}
+      <tr>
+        <td>{{ link.url_from }}</td>
+        <td>{{ link.ahrefs_rank }}</td>
+        <td>{{ link.domain_rating }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}
