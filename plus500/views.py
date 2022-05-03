@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from plus500.models import Plus500
 import requests
+from django.views.generic import CreateView
+from .forms import HomeForm
 
 # Create your views here.
 
