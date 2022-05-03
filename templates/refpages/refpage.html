@@ -8,22 +8,28 @@
       <br>
     </div>
     <br><br>
-    <div class="row">
-      {% for link in all_links %}
-        <div class="col-md-4 col-sm-6 col-lg-3">
-          <div class="card">
-            <img class="card-img-top" src="{{ meal.image_url }}" alt="Card image">
-            <div class="card-body text-center">
-              <p class="card-title">{{ link.url_from }}</p>
-              <hr>
-              <p class="card-text">{{ link.ahrefs_rank }}</p>
-              <hr>
-              <p class="card-text">{{ link.domain_rating }}</p>
-            </div>
-          </div>
-          <br><br><br>
-        </div>
-      {% endfor %}
-    </div>
-  </div>
+
+  <form action = "" method="post">
+      {{ home_form }}
+  </form>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">URL Link</th>
+      <th scope="col">Ahrefs Rank</th>
+      <th scope="col">Domain Rating</th>
+    </tr>
+  </thead>
+<tbody>
+    {% for link in all_links %}
+      <tr>
+        <td>{{ link.url_from }}</td>
+        <td>{{ link.ahrefs_rank }}</td>
+        <td>{{ link.domain_rating }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}
