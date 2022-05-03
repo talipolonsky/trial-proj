@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class Plus500(models.Model):
     url_from = models.CharField(max_length=250)
