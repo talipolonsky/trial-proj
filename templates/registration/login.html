@@ -1,0 +1,17 @@
+{% extends 'plus500/base.html'%}
+
+{% block content %}
+
+{% if form.errors %}
+  <p>Your user/password didn't match</p>
+{% endif %}
+
+<h2 class = "text-center">Welcome to Plus500 SEO Link Analyzer</h2>
+<h4 class = "text-center">please login to continue</h4><br>
+<form class = "text-center" method="post" %>
+  {% csrf_token %}
+  {{ form.as_p}}
+  <button type="submit" name="button">Login</button>
+</form>
+
+{% endblock %}

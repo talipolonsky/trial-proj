@@ -1,0 +1,76 @@
+{% extends 'plus500/base.html'%}
+{% load static %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  <div class = "container">
+    <div class = "text-center container">
+      <br>
+      <h2 class = "text-center">SEO Link Analyzer</h2>
+      <br>
+    </div>
+    <br><br>
+  <!--  number of links and CATEFORIES SELECTION -->
+  <form action="/home_filtered/" method="GET">
+    <p>Choose categories:</p>
+    <!-- <table>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+    </table> -->
+    <input type="checkbox" id="news" name="news" value="News">
+    <label for="news">News</label><br>
+    <input type="checkbox" id="finance" name="finance" value="Finance">
+    <label for="finance">Finance</label><br>
+    <input type="checkbox" id="crypto" name="crypto" value="Crypto">
+    <label for="crypto">Crypto</label><br>
+    <input type="checkbox" id="forex" name="forex" value="Forex">
+    <label for="forex">Forex</label><br>
+    <input type="checkbox" id="commodities" name="commodities" value="Commodities">
+    <label for="commodities">Commodities</label><br>
+    <input type="checkbox" id="leisure" name="leisure" value="Leisure">
+    <label for="leisure">Leisure</label><br>
+    <br>
+    <label for="links_num">Choose number of links:</label><br>
+    <input type="text" id="links_num" name="links_num" value="10"><br>
+    <br>
+    <input type="submit" value="Submit">
+  </form>
+<!--
+  <form action = "" method="post">
+      {{ home_form }}
+  </form>
+-->
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">URL Link</th>
+      <th scope="col">Ahrefs Rank</th>
+      <th scope="col">Domain Rating</th>
+      <th scope="col">URL Pointing To</th>
+      <th scope="col">Title</th>
+    </tr>
+  </thead>
+<tbody>
+    {% for link in all_links %}
+      <tr>
+        <td>{{ link.url_from }}</td>
+        <td>{{ link.ahrefs_rank }}</td>
+        <td>{{ link.domain_rating }}</td>
+        <td>{{ link.url_to }}</td>
+        <td>{{ link.title }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% else %}
+  <h4 class = "text-center">You need to login to continue</h4>
+{% endif %}
+{% endblock %}
