@@ -15,8 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+<<<<<<< HEAD
 from plus500 import views as plus500_views
 from django.contrib.auth import views as auth_views
+=======
+>>>>>>> master
 
 urlpatterns = [
     path('admin/', admin.site.urls),
