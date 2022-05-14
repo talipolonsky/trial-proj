@@ -2,12 +2,8 @@ from django.shortcuts import render
 from plus500.models import Plus500
 import requests
 from django.views.generic import CreateView
-from .forms import HomeForm
-#from django.contrib.auth import authenticate, login
-#from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
-
+from django.db.models import Q, F #for the django queries
 
 @login_required
 def home(request):
@@ -26,7 +22,9 @@ def home_after_filter(request):
     #    if bool_category:
     #        selected_categories.append[category]
     #for selected_category in selected_categories:
-    #    all_links = Plus500.objects.all(category=selected_category)
+    #    all_links = Plus500.objects.get(category=selected_category)
+    #num1 = 70
+    #all_links = Plus500.objects.filter(domain_rating=F('num1'))[:num_of_links]
     all_links = Plus500.objects.all()[:num_of_links]
     return render(request, 'plus500/home.html', {'all_links': all_links})
 
