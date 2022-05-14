@@ -6,7 +6,7 @@ import requests
 def get_data():
     all_links = {}
     Plus500.objects.all().delete()
-    url ='https://apiv2.ahrefs.com?from=backlinks&target=ahrefs.com&mode=subdomains&select=url_from,ahrefs_rank,domain_rating,url_to,title&output=json&token=082c4afc97f7348b730e5fc0b861a2ebd9ce522a'
+    url ='https://apiv2.ahrefs.com?from=backlinks&target=ahrefs.com&mode=subdomains&order_by=ahrefs_rank%3Adesc&select=url_from,ahrefs_rank,domain_rating,url_to,title&output=json&token=082c4afc97f7348b730e5fc0b861a2ebd9ce522a'
     try:
         response = requests.get(url)
         data = response.json()

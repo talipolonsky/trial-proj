@@ -1,0 +1,25 @@
+{% extends 'plus500/base.html'%}
+{% load static %}
+{% block content %}
+{% if user.is_authenticated %}
+  <html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Settings</title>
+    <h2 class = "text-center">Settings</h2>
+  </head>
+  <body>
+    <form action="/settings/" method="GET">
+      <p>Domain Rating:</p>
+      <label for="DR">Domain Rating > </label>
+      <input type="text" id="DR" name="DR" value="" maxlength="40" size="3"><br>
+      <br>
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+  </html>
+
+{% else %}
+  <h4 class = "text-center">You need to login to continue</h4>
+{% endif %}
+{% endblock %}
