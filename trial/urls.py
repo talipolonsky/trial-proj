@@ -15,9 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+<<<<<<< HEAD
+from plus500 import views as plus500_views
+from django.contrib.auth import views as auth_views
+=======
+>>>>>>> master
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('',main_views.home, name='home'),
+    path('',auth_views.LoginView.as_view(), name="login"),
+    path('home/',plus500_views.home, name="home"),
+    path('home_filtered/',plus500_views.home_after_filter, name="home_after_filter"),
+    path('settings/',plus500_views.settings, name="settings"),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('', include ('plus500.urls'))
 ]
