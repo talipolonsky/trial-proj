@@ -33,3 +33,6 @@ class Settings_table(models.Model):
     CMC_markets = models.BooleanField(default=False)
     #the email template
     email_template = models.CharField(max_length=10000)
+    
+    def __int__(self):
+        return self.id

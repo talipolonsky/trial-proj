@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from plus500.models import Plus500
+from plus500.models import Plus500, Settings_table
 import requests
 from django.views.generic import CreateView
 from django.contrib.auth.decorators import login_required
