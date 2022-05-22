@@ -7,6 +7,11 @@ name = "pypi"
 django = "*"
 requests = "*"
 apscheduler = "*"
+translators = "*"
+cloudscraper = "*"
+bs4 = "*"
+nltk = "*"
+sklearn = "*"
 
 [dev-packages]
 
