@@ -9,21 +9,57 @@
       <h2 class = "text-center">SEO Link Analyzer</h2>
       <br>
     </div>
-    <br><br>
   <!--  number of links and CATEFORIES SELECTION -->
-  <form action="/home_filtered/" method="GET">
+  <form action="/home/" method="GET">
     <br>
-    <label for="links_num">Choose number of links:</label><br>
-    <input type="text" id="links_num" name="links_num" value=""><br>
+    <label for="news"><b>Choose categories:</b></label><br>
+    <input type="checkbox" id="news" name="news" value="News">
+    <label for="news">News</label><br>
+    <input type="checkbox" id="finance" name="finance" value="Finance">
+    <label for="finance">Finance</label><br>
+    <input type="checkbox" id="crypto" name="crypto" value="Crypto">
+    <label for="crypto">Crypto</label><br>
+    <input type="checkbox" id="forex" name="forex" value="Forex">
+    <label for="forex">Forex</label><br>
+    <input type="checkbox" id="commodities" name="commodities" value="Commodities">
+    <label for="commodities">Commodities</label><br>
+    <input type="checkbox" id="leisure" name="leisure" value="Leisure">
+    <label for="leisure">Leisure</label><br>
+    <input type="checkbox" name="select-all" id="select-all" />
+    <label for="select-all">Select All Categories</label><br>
     <br>
-    <input type="submit" value="Search">
+    <script language="JavaScript">
+      document.getElementById('select-all').onclick = function() {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        for (var checkbox of checkboxes) {
+          checkbox.checked = this.checked;
+        }
+      }
+    </script>
+    <br>
+    <!-- <label for="links_num"><b>Choose number of links:</b></label><br>
+    <input type="text" id="links_num" name="links_num" value={{num_of_links}}><br>
+    <br> -->
+    <div>
+      <label for="selected_num"><b>Choose number of links:</b></label><br>
+      <input type="radio" name="radio" id="selected_num" value="selected_num" checked/><input type="text" name="links_num" value="{{num_of_links}}" placeholder="Type number..." /><br>
+      <input type="radio" name="radio" id="total_num" value="total_num"/>
+      <label for="total_num">Show all</label><br>
+    </div>
+    <input type="submit" value="Submit and Search" class="btn btn-primary btn-lg">
+    <br>
+    {% if links_num_exception %}
+      <div class="alert alert-danger" role="alert">
+        Invalid <b>number of links</b> entered, please enter a valid number.
+      </div>
+    {% endif %}
   </form>
 <!--
   <form action = "" method="post">
       {{ home_form }}
   </form>
 -->
-<br>
+<br><br>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -38,7 +74,7 @@
     </tr>
   </thead>
 <tbody>
-    {% for link in all_links %}
+    {% for link in selected_links %}
       <tr>
         <td>{{ link.url_from }}</td>
         <td>{{ link.ahrefs_rank }}</td>
@@ -56,4 +92,5 @@
 {% else %}
   <h4 class = "text-center">You need to login to continue</h4>
 {% endif %}
+
 {% endblock %}

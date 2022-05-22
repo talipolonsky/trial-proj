@@ -11,7 +11,7 @@
 <form class = "text-center" method="post" %>
   {% csrf_token %}
   {{ form.as_p}}
-  <button type="submit" name="button">Login</button>
+  <button type="submit" name="button" class="btn btn-primary btn-lg">Login</button>
 </form>
 
 {% endblock %}

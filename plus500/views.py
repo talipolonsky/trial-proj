@@ -5,75 +5,86 @@ from django.views.generic import CreateView
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, F #for the django queries
 from django.shortcuts import render, redirect
-from django.core.exceptions import ValidationError, SuspiciousOperation
+#from django.core.exceptions import ValidationError, SuspiciousOperation
 
 @login_required
 def home(request):
-    all_links = Plus500.objects.all()[:10]
-    return render(request, 'plus500/home.html', {'all_links': all_links})
+    # the dictionary we will return to home.html
+    context = {'links_num_exception': False} #flag if there is an exception in the num_links
+    #bringing the setting_object for the last saved links_num in settings
+    setting_object = Settings_table.objects.get(id__exact=1)
+    #bringing all links from the DB and then filter them by category
+    selected_links = Plus500.objects.all()
 
-@login_required
-def home_after_filter(request):
-    num_of_links= int(request.GET.get('links_num'))
+    if request.GET.get('links_num'): #if the submit button has pressed
+        #updating the links_num in the settigns table if was tipped number of links:
+        #if request.GET.get('selected_num'):
+        try:
+            num_links= int(request.GET.get('links_num'))
+            if num_links >= 0:
+                setting_object.links_num = num_links
+                setting_object.save()
+            else:
+                context.update({'links_num_exception': True})
+        except:
+            context.update({'links_num_exception': True})
+        #else:
+        #    setting_object.links_num = 100
 
-    #for category, bool_category in all_categories.items():
-    #    if bool_category:
-    #        selected_categories.append[category]
-    #for selected_category in selected_categories:
-    #    all_links = Plus500.objects.get(category=selected_category)
-    #num1 = 70
-    #all_links = Plus500.objects.filter(domain_rating=F('num1'))[:num_of_links]
-    all_links = Plus500.objects.all()[:num_of_links]
-    return render(request, 'plus500/home.html', {'all_links': all_links})
+        #selection of categories:
+        all_categories = {"news": request.GET.get('news'),
+             "finance": request.GET.get('finance'),"crypto": request.GET.get('crypto'),
+             "forex": request.GET.get('forex'),"commodities": request.GET.get('commodities'),
+             "leisure": request.GET.get('leisure')}
+
+        unselected_categories = []
+        for category, bool_category in all_categories.items():
+            if not bool_category:
+                unselected_categories.append(category)
+        for unselected_category in unselected_categories:
+            selected_links = selected_links.exclude(category=unselected_category)
+    else:
+        setting_object.links_num = 50
+
+    num_of_links= setting_object.links_num
+    selected_links = selected_links.filter(domain_rating__gt=setting_object.domain_rating)[:num_of_links]
+    #selected_links = selected_links.order_by('-pub_date', 'headline')[:num_of_links]
+    #he result above will be ordered by pub_date descending, then by headline ascending. The negative sign in front of "-pub_date" indicates descending order. Ascending order is implied.
+    context.update({'selected_links': selected_links, 'num_of_links': num_of_links})
+
+    return render(request, 'plus500/home.html', context)
+
 
 @login_required
 def settings(request):
-    # all_categories = {"news": request.GET.get('news'),
-    #     "finance": request.GET.get('finance'),"crypto": request.GET.get('crypto'),
-    #     "forex": request.GET.get('forex'),"commodities": request.GET.get('commodities'),
-    #     "leisure": request.GET.get('leisure')}
-    # form = Settings_table(request.POST or None)
-    # if request.method == 'GET':
-    #     context = {'Settings_table':Settings_table}
-    #     return render(request, 'plus500/settings.html', context)
-    #
-    # if request.method == 'POST':
-    #     if form.is_valid():
-    #         form.save()
-    #         # handle valid form here. eg:
-    #         return render(request, 'plus500/settings.html')
-    #         # return redirect('some_view')
-    #     else:
-    #         # handle invalid form
-    #         raise ValidationError('form was invalid')
-    # # method was neither "GET" nor "POST", raise a 405: Method Not Allowed
-    # raise SuspiciousOperation(405)
+    #send flags of exceptions:
+    context = {'domain_rating_exception': False, 'domain_traffic_exception': False,
+     'RB_ratio_exception': False, 'none_exception': False}
+    setting_object = Settings_table.objects.get(id__exact=1)
+    #updating the fields of the object with id=1:
     if request.method == 'POST':
-        settings_data = Settings_table(
-            domain_rating = request.POST.get('DR'),
-            domain_traffic = request.POST.get('DT'),
-            referringDomains_backlinks_ratio = request.POST.get('RB_ratio'),
-            is_news = request.POST.get('news'),
-            is_finance = request.POST.get('finance'),
-            is_crypto = request.POST.get('crypto'),
-            is_forex = request.POST.get('forex'),
-            is_commodities = request.POST.get('commodities'),
-        )
-        settings_data.save()
-    settings_profile = Settings_table.objects.latest('id')
-    # Update the fields in the Settings_table:
-    # Settings_table.domain_rating = request.GET.get('DR')
-    # Settings_table.domain_traffic = request.GET.get('DT')
-    # Settings_table.referringDomains_backlinks_ratio = request.GET.get('RB_ratio')
-    # if request.GET.get('news'):
-    #     Settings_table.is_news = True
-    # if request.GET.get('finance'):
-    #     Settings_table.is_finance = True
-    # if request.GET.get('crypto'):
-    #     Settings_table.is_crypto = True
-    # if request.GET.get('forex'):
-    #     Settings_table.is_forex = True
-    # if request.GET.get('commodities'):
-    #     Settings_table.is_commodities = True
-    # settings_profile = {'dr': Settings_table.domain_rating, 'dt': Settings_table.domain_traffic, 'ratio': Settings_table.referringDomains_backlinks_ratio}
-    return render(request, 'plus500/settings.html', {'settings_profile': settings_profile})
+        if request.POST.get('DR'):
+            try:
+                setting_object.domain_rating = int(request.POST.get('DR'))
+            except:
+                context.update({'domain_rating_exception': True})
+        if request.POST.get('DT'):
+            try:
+                setting_object.domain_traffic = int(request.POST.get('DT'))
+            except:
+                context.update({'domain_traffic_exception': True})
+        if request.POST.get('RB_ratio'):
+            try:
+                setting_object.referringDomains_backlinks_ratio = int(request.POST.get('RB_ratio'))
+            except:
+                context.update({'RB_ratio_exception': True})
+
+        setting_object.save()
+
+        #for alert of Success:
+        none_exception = not context['domain_rating_exception'] and not context['domain_traffic_exception'] and not context['RB_ratio_exception']
+        if none_exception:
+                context.update({'none_exception': True})
+
+    context.update({'setting_object': setting_object})
+    return render(request, 'plus500/settings.html', context)
