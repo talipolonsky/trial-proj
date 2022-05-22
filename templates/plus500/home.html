@@ -35,6 +35,8 @@
       <th scope="col">Competitor</th>
       <th scope="col">Refdomains</th>
       <th scope="col">Traffic</th>
+      <th scope="col">Category</th>
+      <th scope="col">Refdomains/Backlinks Ratio</th>
     </tr>
   </thead>
 <tbody>
@@ -48,6 +50,8 @@
         <td>{{ link.competitor }}</td>
         <td>{{ link.refdomains }}</td>
         <td>{{ link.traffic }}</td>
+        <td>{{ link.category }}</td>
+        <td>{{ link.refdomains_backlinks_ratio }}</td>
       </tr>
     {% endfor %}
   </tbody>

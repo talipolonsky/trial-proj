@@ -9,7 +9,8 @@ class Plus500(models.Model):
     competitor = models.CharField(max_length=250, blank=True)
     refdomains = models.IntegerField(blank=True, null=True)
     traffic = models.IntegerField(blank=True, null=True)
-    #category =  models.CharField(max_length=50, blank=True)
+    category =  models.CharField(max_length=50, blank=True)
+    refdomains_backlinks_ratio = models.FloatField(blank=True, null=True)
     #contact_email = models.EmailField()
 
     def __str__(self):
