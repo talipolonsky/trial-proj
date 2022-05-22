@@ -1,7 +1,7 @@
 {% extends 'plus500/base.html'%}
 {% load static %}
-{% block content %}
 
+{% block content %}
 {% if user.is_authenticated %}
   <html lang="en" dir="ltr">
   <head>
@@ -10,39 +10,49 @@
     <h2 class = "text-center">Settings</h2>
   </head>
   <body>
-    <h6>The last settings are:</h6>
-    {{settings_profile.domain_rating}}
-
-
     <form action="/settings/" method="POST">
       {% csrf_token %}
+      
+      <!-- sorting metrics: -->
+      <label for="DR"><b>Select sorting metrics:</b></label><br>
       <p>Domain Rating:</p>
       <label for="DR">Domain Rating > </label>
-      <input type="text" id="DR" name="DR" value="" maxlength="40" size="3"><br>
+      <input type="text" id="DR" name="DR" value={{setting_object.domain_rating}} maxlength="40" size="3"><br>
       <br>
       <p>Domain Traffic:</p>
       <label for="DT">Domain Traffic > </label>
-      <input type="text" id="DT" name="DT" value="" maxlength="40" size="3"><br>
+      <input type="text" id="DT" name="DT" value={{setting_object.domain_traffic}} maxlength="40" size="3"><br>
       <br>
       <p>Referring Domains / Backlinks Ratio (in %):</p>
       <label for="RB_ratio">Referring Domains / Backlinks Ratio > </label>
-      <input type="text" id="RB_ratio" name="RB_ratio" value="" maxlength="40" size="3"><br>
+      <input type="text" id="RB_ratio" name="RB_ratio" value={{setting_object.referringDomains_backlinks_ratio}} maxlength="40" size="3"><br>
       <br>
-      <p>Choose categories:</p>
-      <input type="checkbox" id="news" name="news" value="News">
-      <label for="news">News</label><br>
-      <input type="checkbox" id="finance" name="finance" value="Finance">
-      <label for="finance">Finance</label><br>
-      <input type="checkbox" id="crypto" name="crypto" value="Crypto">
-      <label for="crypto">Crypto</label><br>
-      <input type="checkbox" id="forex" name="forex" value="Forex">
-      <label for="forex">Forex</label><br>
-      <input type="checkbox" id="commodities" name="commodities" value="Commodities">
-      <label for="commodities">Commodities</label><br>
-      <input type="checkbox" id="leisure" name="leisure" value="Leisure">
-      <label for="leisure">Leisure</label><br>
+      <input type="submit" value="Save settings" class="btn btn-primary btn-lg">
       <br>
-      <input type="submit" value="Submit">
+
+      <!-- Alerts of exceptions and succes-->
+      {% if domain_rating_exception %}
+        <br>
+        <div class="alert alert-danger" role="alert">
+          Invalid <b>Domain Rating</b> entered, please enter a valid DR.
+        </div>
+      {% endif %}
+      {% if domain_traffic_exception %}
+        <div class="alert alert-danger" role="alert">
+          Invalid <b>Domain Traffic</b> entered, please enter a valid one.
+        </div>
+      {% endif %}
+      {% if RB_ratio_exception %}
+        <div class="alert alert-danger" role="alert">
+          Invalid <b>Referring Domains / Backlinks Ratio</b> entered, please enter a valid one.
+        </div>
+      {% endif %}
+      {% if none_exception %}
+        <br>
+        <div class="alert alert-success" role="alert">
+          <h4 class="alert-heading">All saved successfuly!</h4>
+        </div>
+      {% endif %}
     </form>
   </body>
   </html>
@@ -50,4 +60,5 @@
 {% else %}
   <h4 class = "text-center">You need to login to continue</h4>
 {% endif %}
+
 {% endblock %}
