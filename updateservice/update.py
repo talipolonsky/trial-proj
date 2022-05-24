@@ -73,12 +73,15 @@ def get_text(url_link):
         all_the_content = str(title) + " " + str(description) + " " + str(h1_all) + " " + str(h2_all) + " " + str(h3_all) + " " + str(paragraphs_all)
         all_the_content = str(all_the_content)[0:280]
 
-    except Exception as e:
-        print(e)
+    except:
+        all_the_content = "Attention Required!"
 
-    # print(all_the_content)
-    all_the_content = ts.google(all_the_content, to_language='en')
-    # print(all_the_content)
+    try:
+        all_the_content = ts.google(all_the_content, to_language='en')
+
+    except:
+        all_the_content = "Attention Required!"
+
     return all_the_content
 
 
