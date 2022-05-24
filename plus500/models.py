@@ -10,15 +10,16 @@ class Plus500(models.Model):
     refdomains = models.IntegerField(blank=True, null=True)
     traffic = models.IntegerField(blank=True, null=True)
     refdomains_backlinks_ratio = models.FloatField(blank=True, null=True)
-    category_options = (
-        ('news', 'news'),
-        ('finance', 'finance'),
-        ('crypto', 'crypto'),
-        ('forex', 'forex'),
-        ('commodities', 'commodities'),
-        ('leisure', 'leisure'),
-    )
-    category =  models.CharField(max_length=50, blank=True, choices=category_options)
+    #category_options = (
+    #    ('news', 'news'),
+    #    ('finance', 'finance'),
+    #    ('crypto', 'crypto'),
+    #    ('forex', 'forex'),
+    #    ('commodities', 'commodities'),
+    #    ('leisure', 'leisure'),
+    #)
+    #category =  models.CharField(max_length=50, blank=True, choices=category_options)
+    category =  models.CharField(max_length=50, blank=True)
     #contact_email = models.EmailField()
 
     def __str__(self):
