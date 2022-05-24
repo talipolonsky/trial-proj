@@ -9,7 +9,7 @@ class Plus500(models.Model):
     competitor = models.CharField(max_length=250, blank=True)
     refdomains = models.IntegerField(blank=True, null=True)
     traffic = models.IntegerField(blank=True, null=True)
-<<<<<<< HEAD
+    refdomains_backlinks_ratio = models.FloatField(blank=True, null=True)
     category_options = (
         ('news', 'news'),
         ('finance', 'finance'),
@@ -19,10 +19,6 @@ class Plus500(models.Model):
         ('leisure', 'leisure'),
     )
     category =  models.CharField(max_length=50, blank=True, choices=category_options)
-=======
-    category =  models.CharField(max_length=50, blank=True)
-    refdomains_backlinks_ratio = models.FloatField(blank=True, null=True)
->>>>>>> 3027ebab1cc08a7059642d4c449bfda45bec5036
     #contact_email = models.EmailField()
 
     def __str__(self):
