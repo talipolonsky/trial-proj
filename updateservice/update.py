@@ -220,7 +220,7 @@ def get_data():
     Plus500.objects.all().delete()
     target_list=['ahrefs.com']
     for target in target_list:
-        url = 'https://apiv2.ahrefs.com?from=backlinks&target=' + target + '&mode=subdomains&limit=50&order_by=ahrefs_rank%3Adesc&select=url_from,ahrefs_rank,domain_rating,url_to,title&output=json&token=082c4afc97f7348b730e5fc0b861a2ebd9ce522a'
+        url = 'https://apiv2.ahrefs.com?from=backlinks&target=' + target + '&mode=subdomains&limit=50&order_by=domain_rating%3Adesc&select=url_from,domain_rating,url_to,title&where=nofollow%3Dfalse&output=json&token=082c4afc97f7348b730e5fc0b861a2ebd9ce522a'
         try:
             response = requests.get(url)
             data = response.json()
@@ -234,7 +234,6 @@ def get_data():
             link_data = Plus500(
                 url_from = i['url_from'],
                 url_to = i['url_to'],
-                ahrefs_rank = i['ahrefs_rank'],
                 domain_rating = i['domain_rating'],
                 title = i['title'],
                 competitor = target
@@ -244,6 +243,8 @@ def get_data():
             url_list = [url]
             category_pred = get_category(url_list)
             Plus500.objects.filter(url_from=url,competitor=target).update(category=category_pred)
+            url_domain_value=urlparse(url).netloc
+            Plus500.objects.filter(url_from=url,competitor=target).update(url_domain=url_domain_value)
             refdomain_value, backlinks_value =refdomain_for_url(url)
             ratio =float(refdomain_value/backlinks_value)
             Plus500.objects.filter(url_from=url,competitor=target).update(refdomains=refdomain_value)

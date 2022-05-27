@@ -64,7 +64,7 @@
   <thead>
     <tr>
       <th scope="col">URL Link</th>
-      <th scope="col">Ahrefs Rank</th>
+      <th scope="col">URL Domain/th>
       <th scope="col">Domain Rating</th>
       <th scope="col">URL Pointing To</th>
       <th scope="col">Title</th>
@@ -78,8 +78,8 @@
 <tbody>
     {% for link in selected_links %}
       <tr>
-        <td>{{ link.url_from }}</td>
-        <td>{{ link.ahrefs_rank }}</td>
+        <td><a href="{{ link.url_from }}">{{link.url_from}}</a></td>
+        <td>{{ link.url_domain }}</td>
         <td>{{ link.domain_rating }}</td>
         <td>{{ link.url_to }}</td>
         <td>{{ link.title }}</td>
