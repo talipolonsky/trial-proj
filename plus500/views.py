@@ -1,10 +1,11 @@
 from django.shortcuts import render
-from plus500.models import Plus500, Settings_table
+from plus500.models import Plus500, Settings_table, Emails_Sending
 import requests
 from django.views.generic import CreateView
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, F #for the django queries
 from django.shortcuts import render, redirect
+from plus500.forms import *
 #from django.core.exceptions import ValidationError, SuspiciousOperation
 
 @login_required
@@ -54,10 +55,21 @@ def home(request):
 
     return render(request, 'plus500/home.html', context)
 
+@login_required
+def send_an_email(request):
+    #send flags of exceptions:
+    sending_email = Emails_Sending.objects.get(id__exact=1)
+    if request.GET.get('send_email'):
+        sending_email.send_email = request.GET.get('send_email')
+    setting_object.save()
+    context.update({'send_email': send_email})
+    return render(request, 'plus500/home.html', send_email)
 
 @login_required
 def settings(request):
     #send flags of exceptions:
+    # form = StyleSettings
+    # context = {'form': form}
     context = {'domain_rating_exception': False, 'domain_traffic_exception': False,
      'RB_ratio_exception': False, 'none_exception': False}
     setting_object = Settings_table.objects.get(id__exact=1)
