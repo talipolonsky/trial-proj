@@ -1,17 +1,37 @@
 {% extends 'plus500/base.html'%}
 
 {% block content %}
+<html>
+<head>
+<title>SEO Link Analyzer: Login</title>
+  <style>
+    .button{
+      background-color: #90CAF9;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+    }
 
+  </style>
+</head>
+<body>
+
+<!--
 {% if form.errors %}
-  <p>Your user/password didn't match</p>
+  <p style="color:red; text-align:center;"> Your user/password didn't match </p>
 {% endif %}
-
-<h2 class = "text-center">Welcome to Plus500 SEO Link Analyzer</h2>
-<h4 class = "text-center">please login to continue</h4><br>
+-->
+<h1 class = "text-center">Welcome to SEO Link Analyzer!</h1>
+<h4 class = "text-center">Please sign in to continue:</h4><br>
 <form class = "text-center" method="post" %>
   {% csrf_token %}
   {{ form.as_p}}
-  <button type="submit" name="button" class="btn btn-primary btn-lg">Login</button>
+  <br>
+  <button type="submit" name="button" class="button">Sign In</button>
 </form>
+
+</body>
+</html>
 
 {% endblock %}
