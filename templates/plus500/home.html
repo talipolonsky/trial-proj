@@ -54,40 +54,34 @@
       </div>
     {% endif %}
   </form>
-<!--
-  <form action = "" method="post">
-      {{ home_form }}
-  </form>
--->
+
 <br><br>
 <table class="table table-striped">
   <thead>
     <tr>
-      <th scope="col">URL Link</th>
-      <th scope="col">URL Domain/th>
+      <th scope="col">Link pointing to a cometitor</th>
+      <th scope="col">Domain of the link</th>
+      <th scope="col">The Competitor which the link is pointing to</th>
+      <th scope="col">Competitor Domain</th>
       <th scope="col">Domain Rating</th>
-      <th scope="col">URL Pointing To</th>
-      <th scope="col">Title</th>
-      <th scope="col">Competitor</th>
       <th scope="col">Refdomains</th>
       <th scope="col">Traffic</th>
-      <th scope="col">Category</th>
       <th scope="col">Refdomains/Backlinks Ratio</th>
+      <th scope="col">Link Category</th>
     </tr>
   </thead>
 <tbody>
     {% for link in selected_links %}
       <tr>
-        <td><a href="{{ link.url_from }}">{{link.url_from}}</a></td>
+        <td><a href="{{ link.url_from }}">{{link.title}}</a></td>
         <td>{{ link.url_domain }}</td>
-        <td>{{ link.domain_rating }}</td>
         <td>{{ link.url_to }}</td>
-        <td>{{ link.title }}</td>
         <td>{{ link.competitor }}</td>
+        <td>{{ link.domain_rating }}</td>
         <td>{{ link.refdomains }}</td>
         <td>{{ link.traffic }}</td>
+        <td type="number">{{ link.refdomains_backlinks_ratio }}</td>
         <td>{{ link.category }}</td>
-        <td>{{ link.refdomains_backlinks_ratio }}</td>
       </tr>
     {% endfor %}
   </tbody>
