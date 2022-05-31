@@ -6,6 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q, F #for the django queries
 from django.shortcuts import render, redirect
 from plus500.forms import *
+import csv
+from django.http import HttpResponse
+import datetime
 #from django.core.exceptions import ValidationError, SuspiciousOperation
 
 @login_required
@@ -100,3 +103,14 @@ def settings(request):
 
     context.update({'setting_object': setting_object})
     return render(request, 'plus500/settings.html', context)
+
+@login_required
+def export_to_csv(request):
+    response =HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename= daily_data' + str(datetime.datetime.now()) + '.csv'
+    writer = csv.writer(response)
+    writer.writerow(['url_from','url_to','domain_rating','title','competitor','refdomains','traffic','refdomains_backlinks_ratio','category', 'url_domain','contact_email'])
+    plus500 = Plus500.objects.all()
+    for item in plus500:
+        writer.writerow([item.url_from, item.url_to, item.domain_rating,item.title,item.competitor,item.refdomains,item.traffic,item.refdomains_backlinks_ratio, item.category, item.url_domain, item.contact_email])
+    return response

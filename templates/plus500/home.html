@@ -79,6 +79,8 @@
   </form>
 -->
 <br><br>
+<a href="{% url 'export-csv'   %}" class = "btn btn-secondary" >Save Current Data To CSV</a>
+<br><br>
 <table align="left" class="table table-striped">
   <thead>
     <tr>
@@ -91,6 +93,7 @@
       <th scope="col">Traffic</th>
       <th scope="col">Refdomains/Backlinks Ratio</th>
       <th scope="col">Link Category</th>
+      <th scope="col">Website's Contacts Emails</th>
       <th scope="col">Send an Email?</th>
     </tr>
   </thead>
@@ -106,6 +109,7 @@
           <td>{{ link.traffic }}</td>
           <td type="number">{{ link.refdomains_backlinks_ratio }}</td>
           <td>{{ link.category }}</td>
+          <td>{{ link.contact_email }}</td>
         <td>
           <form action="/send_an_email/" method="GET">
             {% csrf_token %}

@@ -6,6 +6,10 @@ from urllib.parse import urlparse
 import translators as ts
 import cloudscraper
 from bs4 import BeautifulSoup
+#for reaching contact details from a website
+import requests.exceptions
+from urllib.parse import urlsplit
+from collections import deque
 # for text pre-processing
 import re
 import string
@@ -20,6 +24,65 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 # bag of words
 from sklearn.feature_extraction.text import TfidfVectorizer
+
+def get_contact(url):
+    if "blog" in url:
+        return "The website is a blog"
+    if "article" in url:
+        return "The website is a blog"
+    # a queue of urls to be crawled
+    new_urls = deque([url])
+
+    # a set of urls that we have already crawled
+    processed_urls = set()
+
+    # a set of crawled emails
+    emails = set()
+
+    # process urls one by one until we exhaust the queue
+    while len(new_urls):
+        # move next url from the queue to the set of processed urls
+        url = new_urls.popleft()
+        processed_urls.add(url)
+
+        # extract base url to resolve relative links
+        parts = urlsplit(url)
+        base_url = "{0.scheme}://{0.netloc}".format(parts)
+        path = url[:url.rfind('/')+1] if '/' in parts.path else url
+
+        # get url's content
+        #print("Processing %s" % url)
+        try:
+            response = requests.get(url)
+        except (requests.exceptions.MissingSchema, requests.exceptions.ConnectionError):
+            # ignore pages with errors
+            continue
+
+        # extract all email addresses and add them into the resulting set
+        new_emails = set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.[a-z]+", response.text, re.I))
+        emails.update(new_emails)
+
+        # create a beutiful soup for the html document
+        soup = BeautifulSoup(response.text, 'lxml')
+
+        # find and process all the anchors in the document
+        for anchor in soup.find_all("a"):
+            # extract link url from the anchor
+            link = anchor.attrs["href"] if "href" in anchor.attrs else ''
+        # resolve relative links
+        if link.startswith('/'):
+            link = base_url + link
+        elif not link.startswith('http'):
+            link = path + link
+        # add the new url to the queue if it was not enqueued nor processed yet
+        if not link in new_urls and not link in processed_urls:
+            new_urls.append(link)
+    new = str(emails)
+    if len(emails) ==0:
+        return "No emails were found"
+    else:
+        return new
+
 
 
 def train():
@@ -327,7 +390,9 @@ def get_data():
                 Plus500.objects.filter(url_from=url,competitor=target).update(refdomains_backlinks_ratio=ratio)
                 traffic_value =traffic_for_url(url)
                 Plus500.objects.filter(url_from=url,competitor=target).update(traffic=traffic_value)
-        except:
-            print("Failed reading the data")
+                the_url = "url"
+                contact_value = get_contact(url)
+                Plus500.objects.filter(url_from=url,competitor=target).update(contact_email=contact_value)
+        except Exception as e: print(e)
     all_links = Plus500.objects.all()
     return (all_links)

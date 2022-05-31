@@ -20,7 +20,7 @@ class Plus500(models.Model):
     #category =  models.CharField(max_length=50, blank=True, choices=category_options)
     category =  models.CharField(max_length=50, blank=True)
     url_domain = models.CharField(max_length=250, blank=True)
-    #contact_email = models.EmailField()
+    contact_email = models.CharField(max_length=250, blank=True)
 
     def __str__(self):
         return self.url_from
