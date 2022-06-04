@@ -72,22 +72,22 @@
               <label for="leisure">Leisure</label><br>
               <input style="margin-left: 20px;" type="checkbox" name="select-all" id="select-all" />
               <label for="select-all">Select all categories</label><br>
-            </fieldset>
-            <script language="JavaScript">
-              document.getElementById('select-all').onclick = function() {
-                var checkboxes = document.querySelectorAll('input[id="news"], input[id="finance"], input[id="crypto"], input[id="forex"], input[id="commodities"], input[id="leisure"]');
-                for (var checkbox of checkboxes) {
-                  checkbox.checked = this.checked;
+              </fieldset>
+              <script language="JavaScript">
+                document.getElementById('select-all').onclick = function() {
+                  var checkboxes = document.querySelectorAll('input[id="news"], input[id="finance"], input[id="crypto"], input[id="forex"], input[id="commodities"], input[id="leisure"]');
+                  for (var checkbox of checkboxes) {
+                    checkbox.checked = this.checked;
+                  }
                 }
-              }
-            </script>
+              </script>
           </td>
           <td>
             <div>
               <label for="selected_num"><b>Choose number of links:</b></label><br>
-              <input style="margin-left: 20px;" type="radio" name="radio" id="selected_num" value="selected_num" checked/><input style="margin-left: 20px;" type="text" name="links_num" value="{{num_of_links}}" placeholder="Type number..." /><br>
-              <input style="margin-left: 20px;" type="radio" name="radio" id="total_num" value="total_num"/>
-              <label style="margin-left: 20px;" for="total_num">Show all</label><br>
+              <input style="margin-left: 10px;" type="radio" name="radio" id="selected_num" value="selected_num" checked/><input style="width: 4em" type="number" name="links_num" value="{{num_of_links}}" placeholder="Type number..." /><br>
+              <input style="margin-left: 10px;" type="radio" name="radio" id="total_num" value="total_num"/>
+              <label style="margin-left: 10px;" for="total_num">Show all</label><br>
             </div>
           </td>
         </tr>
