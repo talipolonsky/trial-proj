@@ -30,7 +30,7 @@
     <h1 class = "text-center">Settings</h1>
   </head>
   <body>
-    <form action="/settings/" method="POST">
+    <form action="/settings/" method="POST" id="settings_form">
       {% csrf_token %}
       <div class="container-fluid">
       {{form.as_p}}
@@ -38,54 +38,84 @@
       <!-- sorting metrics: -->
       <p>Define the sorting metrics:<p>
       <label for="DR">Domain Rating > </label>
-      <input type="number" id="DR" name="DR" value={{setting_object.domain_rating}} maxlength="40" style="width: 5em" step=0.5><br>
+      <input type="number" id="DR" name="DR" value={{setting_object.domain_rating}} maxlength="40" style="width: 5em" step=1><br>
       <br>
       <label for="DT">Domain Traffic > </label>
-      <input type="number" id="DT" name="DT" value={{setting_object.domain_traffic}} maxlength="40" style="width: 5em" step=0.5><br>
+      <input type="number" id="DT" name="DT" value={{setting_object.domain_traffic}} maxlength="40" style="width: 5em" step=1><br>
       <br>
       <label for="RB_ratio">Referring Domains and Backlinks Ratio (in %) > </label>
-      <input type="number" id="RB_ratio" name="RB_ratio" value={{setting_object.referringDomains_backlinks_ratio}} maxlength="40" style="width: 5em" step=0.01 min=0 max=100><br>
-      <br>
-      <input type="submit" value="Save" class="btn btn-primary btn-lg">
+      <input type="number" id="RB_ratio" name="RB_ratio" value={{setting_object.referringDomains_backlinks_ratio}} maxlength="40" style="width: 5em" step=1 min=0 max=100><br>
       <br>
       </div>
       <div class="container-fluid">
       {{form.as_p}}
 
-      <!-- sorting metrics: -->
+      <!-- sorting prioritities: -->
       <p>Define the sorting prioritities:<p>
       <label for="DR_priority">Domain Rating Priority: </label>
-      <input type="number" id="DR_priority" name="DR_priority" value={{setting_object.domain_rating_priority}} maxlength="40" style="width: 5em" min=0 max=5><br>
+      <input type="number" id="DR_priority" name="DR_priority" value={{setting_object.domain_rating_priority}} maxlength="40" style="width: 5em" min=0 max=2><br>
       <br>
       <label for="DT_priority">Domain Traffic Priority: </label>
-      <input type="number" id="DT_priority" name="DT_priority" value={{setting_object.domain_traffic_priority}} maxlength="40" style="width: 5em" min=0 max=5><br>
-      <br>
-      <label for="traffic_trend_priority">Traffic Trend Priority: </label>
-      <input type="number" id="traffic_trend_priority" name="traffic_trend_priority" value={{setting_object.traffic_trend_priority}} maxlength="40" style="width: 5em" min=0 max=5><br>
+      <input type="number" id="DT_priority" name="DT_priority" value={{setting_object.domain_traffic_priority}} maxlength="40" style="width: 5em" min=0 max=2><br>
       <br>
       <label for="RB_ratio_priority">Referring Domains and Backlinks Ratio Priority: </label>
-      <input type="number" id="RB_ratio_priority" name="RB_ratio_priority" value={{setting_object.referringDomains_backlinks_ratio_priority}} maxlength="40" style="width: 5em" min=0 max=5><br>
+      <input type="number" id="RB_ratio_priority" name="RB_ratio_priority" value={{setting_object.referringDomains_backlinks_ratio_priority}} maxlength="40" style="width: 5em" min=0 max=2><br>
+      <br>
+      </div>
+
+      <div class="container-fluid">
+      {{form.as_p}}
+
+      <!-- competitor companies: -->
+      <p>Define the competitor companies:<p>
+        <!--  ng-checked="{{setting_object.avatrae}}"  {{setting_object.avatrae}}-->
+      <input style="margin-left: 20px;" type="checkbox" id="avatrae" name="avatrae"  {% if setting_object.avatrae %} checked="True" {% endif %}>
+      <label for="avatrae">Avatrae</label>
+      <br>
+      <input style="margin-left: 20px;" type="checkbox" id="robinhood" name="robinhood" {% if setting_object.robinhood %} checked="True" {% endif %}>
+      <label for="robinhood">Robinhood</label>
+      <br>
+      <input style="margin-left: 20px;" type="checkbox" id="etoro" name="etoro" {% if setting_object.etoro %} checked="True" {% endif %}>
+      <label for="etoro">Etoro</label>
+      <br>
+      <input style="margin-left: 20px;" type="checkbox" id="IG" name="IG" {% if setting_object.IG %} checked="True" {% endif %}>
+      <label for="IG">IG</label>
+      <br>
+      <input style="margin-left: 20px;" type="checkbox" id="CMC_markets" name="CMC_markets" {% if setting_object.CMC_markets %} checked="True" {% endif %}>
+      <label for="CMC_markets">CMC markets</label>
+      <br>
+      <input style="margin-left: 20px;" type="checkbox" name="select-all" id="select-all" />
+      <label for="select-all">Select all Competitors</label><br>
+      <script language="JavaScript">
+        document.getElementById('select-all').onclick = function() {
+          var checkboxes = document.querySelectorAll('input[id="avatrae"], input[id="robinhood"], input[id="etoro"], input[id="IG"], input[id="CMC_markets"]');
+          for (var checkbox of checkboxes) {
+            checkbox.checked = this.checked;
+          }
+        }
+      </script>
+      </div>
+      <br>
+
+      <div class="container-fluid">
+      {{form.as_p}}
+
+      <!-- Email Template: -->
+      <p>Define the email template:<p>
+      <label for="email_template">Email Template:</label>
+      <input style="margin-left: 20px;" type="text" id="email_template" name="email_template" value={{setting_object.email_template}} size=50>
+      <!--<textarea name="paragraph_text" cols="50" rows="10"> </textarea>-->
+      <!--<textarea form ="settings_form" name="taname" id="taid" cols="35" wrap="soft" value={{setting_object.email_template}}></textarea>-->
       <br>
       <input type="submit" value="Save" class="btn btn-primary btn-lg">
-
       <br>
       </div>
 
       <!-- Alerts of exceptions and succes-->
-      {% if domain_rating_exception %}
+      {% if priority_range_exception %}
         <br>
         <div class="alert alert-danger" role="alert">
-          Invalid <b>Domain Rating</b> entered, please enter a valid DR.
-        </div>
-      {% endif %}
-      {% if domain_traffic_exception %}
-        <div class="alert alert-danger" role="alert">
-          Invalid <b>Domain Traffic</b> entered, please enter a valid one.
-        </div>
-      {% endif %}
-      {% if RB_ratio_exception %}
-        <div class="alert alert-danger" role="alert">
-          Invalid <b>Referring Domains / Backlinks Ratio</b> entered, please enter a valid one.
+          Invalid <b>Priority Range</b> entered, please enter a valid range that includes exactly: 0,1,2.
         </div>
       {% endif %}
       {% if none_exception %}

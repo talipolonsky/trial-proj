@@ -41,7 +41,6 @@ class Settings_table(models.Model):
     #sorting priorities of the fields:
     domain_rating_priority = models.IntegerField(null=True)
     domain_traffic_priority = models.IntegerField(null=True)
-    traffic_trend_priority = models.IntegerField(null=True)
     referringDomains_backlinks_ratio_priority = models.IntegerField(null=True)
     #cometitors bolean fields (True if selected, else False):
     avatrae = models.BooleanField(default=False)
@@ -50,7 +49,7 @@ class Settings_table(models.Model):
     IG = models.BooleanField(default=False)
     CMC_markets = models.BooleanField(default=False)
     #the email template
-    email_template = models.CharField(max_length=10000, null=True)
+    email_template = models.CharField(max_length=100000, null=True)
     #last number of links:
     links_num = models.IntegerField(null=True)
 
