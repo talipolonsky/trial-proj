@@ -38,7 +38,6 @@
 }
 
 
-
 </style>
 </head>
 
@@ -110,11 +109,6 @@
 
   </form>
   </div>
-<!--
-  <form action = "" method="post">
-      {{ home_form }}
-  </form>
--->
 <br><br>
 <a href="{% url 'export-csv'   %}" class = "btn btn-secondary" >Save Current Data To CSV</a>
 <br><br>
@@ -145,7 +139,7 @@
           <td>{{ link.domain_rating }}</td>
           <td>{{ link.refdomains }}</td>
           <td>{{ link.traffic }}</td>
-          <td type="number">{{ link.refdomains_backlinks_ratio }}</td>
+          <td>{{ link.refdomains_backlinks_ratio }} %</td>
           <td>{{ link.category }}</td>
           <td>{{ link.contact_email }}</td>
         <td>

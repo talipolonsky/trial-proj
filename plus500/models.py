@@ -41,7 +41,7 @@ class Settings_table(models.Model):
     #sorting priorities of the fields:
     domain_rating_priority = models.IntegerField(null=True)
     domain_traffic_priority = models.IntegerField(null=True)
-    organic_keywords_priority = models.IntegerField(null=True)
+    traffic_trend_priority = models.IntegerField(null=True)
     referringDomains_backlinks_ratio_priority = models.IntegerField(null=True)
     #cometitors bolean fields (True if selected, else False):
     avatrae = models.BooleanField(default=False)

@@ -35,19 +35,39 @@
       <div class="container-fluid">
       {{form.as_p}}
 
-
       <!-- sorting metrics: -->
       <p>Define the sorting metrics:<p>
       <label for="DR">Domain Rating > </label>
-      <input type="text" id="DR" name="DR" value={{setting_object.domain_rating}} maxlength="40" size="3"><br>
+      <input type="number" id="DR" name="DR" value={{setting_object.domain_rating}} maxlength="40" style="width: 5em" step=0.5><br>
       <br>
       <label for="DT">Domain Traffic > </label>
-      <input type="text" id="DT" name="DT" value={{setting_object.domain_traffic}} maxlength="40" size="3"><br>
+      <input type="number" id="DT" name="DT" value={{setting_object.domain_traffic}} maxlength="40" style="width: 5em" step=0.5><br>
       <br>
-      <label for="RB_ratio">Ratio between Referring Domains and Backlinks (in %) > </label>
-      <input type="text" id="RB_ratio" name="RB_ratio" value={{setting_object.referringDomains_backlinks_ratio}} maxlength="40" size="3"><br>
+      <label for="RB_ratio">Referring Domains and Backlinks Ratio (in %) > </label>
+      <input type="number" id="RB_ratio" name="RB_ratio" value={{setting_object.referringDomains_backlinks_ratio}} maxlength="40" style="width: 5em" step=0.01 min=0 max=100><br>
       <br>
       <input type="submit" value="Save" class="btn btn-primary btn-lg">
+      <br>
+      </div>
+      <div class="container-fluid">
+      {{form.as_p}}
+
+      <!-- sorting metrics: -->
+      <p>Define the sorting prioritities:<p>
+      <label for="DR_priority">Domain Rating Priority: </label>
+      <input type="number" id="DR_priority" name="DR_priority" value={{setting_object.domain_rating_priority}} maxlength="40" style="width: 5em" min=0 max=5><br>
+      <br>
+      <label for="DT_priority">Domain Traffic Priority: </label>
+      <input type="number" id="DT_priority" name="DT_priority" value={{setting_object.domain_traffic_priority}} maxlength="40" style="width: 5em" min=0 max=5><br>
+      <br>
+      <label for="traffic_trend_priority">Traffic Trend Priority: </label>
+      <input type="number" id="traffic_trend_priority" name="traffic_trend_priority" value={{setting_object.traffic_trend_priority}} maxlength="40" style="width: 5em" min=0 max=5><br>
+      <br>
+      <label for="RB_ratio_priority">Referring Domains and Backlinks Ratio Priority: </label>
+      <input type="number" id="RB_ratio_priority" name="RB_ratio_priority" value={{setting_object.referringDomains_backlinks_ratio_priority}} maxlength="40" style="width: 5em" min=0 max=5><br>
+      <br>
+      <input type="submit" value="Save" class="btn btn-primary btn-lg">
+
       <br>
       </div>
 
