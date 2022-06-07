@@ -24,6 +24,16 @@
         padding: 10px 20px;
         font-size: 14px;
       }
+      .first_table, .second_table{
+        border-collapse: collapse;
+        width: 100%;
+      }
+      .first_table th, .first_table td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: none;
+        vertical-align:top;
+      }
     </style>
     <title>SEO Link Analyzer: Settings</title>
     <br><br>
@@ -32,24 +42,30 @@
   <body>
     <form action="/settings/" method="POST" id="settings_form">
       {% csrf_token %}
+
+  <table class= "first_table">
+    <tbody>
+      <tr>
+        <td>
+            <div class="container-fluid">
+            {{form.as_p}}
+            <fieldset>
+          <!-- sorting metrics: -->
+          <p>Define the sorting metrics:<p>
+          <label for="DR">Domain Rating > </label>
+          <input type="number" id="DR" name="DR" value={{setting_object.domain_rating}} maxlength="40" style="width: 5em" step=1><br>
+          <br>
+          <label for="DT">Domain Traffic > </label>
+          <input type="number" id="DT" name="DT" value={{setting_object.domain_traffic}} maxlength="40" style="width: 5em" step=1><br>
+          <br>
+          <label for="RB_ratio">Referring Domains and Backlinks Ratio (in %) > </label>
+          <input type="number" id="RB_ratio" name="RB_ratio" value={{setting_object.referringDomains_backlinks_ratio}} maxlength="40" style="width: 5em" step=1 min=0 max=100><br>
+          <br>
+          </div>
+      </td>
+      <td>
       <div class="container-fluid">
       {{form.as_p}}
-
-      <!-- sorting metrics: -->
-      <p>Define the sorting metrics:<p>
-      <label for="DR">Domain Rating > </label>
-      <input type="number" id="DR" name="DR" value={{setting_object.domain_rating}} maxlength="40" style="width: 5em" step=1><br>
-      <br>
-      <label for="DT">Domain Traffic > </label>
-      <input type="number" id="DT" name="DT" value={{setting_object.domain_traffic}} maxlength="40" style="width: 5em" step=1><br>
-      <br>
-      <label for="RB_ratio">Referring Domains and Backlinks Ratio (in %) > </label>
-      <input type="number" id="RB_ratio" name="RB_ratio" value={{setting_object.referringDomains_backlinks_ratio}} maxlength="40" style="width: 5em" step=1 min=0 max=100><br>
-      <br>
-      </div>
-      <div class="container-fluid">
-      {{form.as_p}}
-
       <!-- sorting prioritities: -->
       <p>Define the sorting prioritities:<p>
       <label for="DR_priority">Domain Rating Priority: </label>
@@ -62,10 +78,10 @@
       <input type="number" id="RB_ratio_priority" name="RB_ratio_priority" value={{setting_object.referringDomains_backlinks_ratio_priority}} maxlength="40" style="width: 5em" min=0 max=2><br>
       <br>
       </div>
-
+    </td>
+    <td>
       <div class="container-fluid">
       {{form.as_p}}
-
       <!-- competitor companies: -->
       <p>Define the competitor companies:<p>
         <!--  ng-checked="{{setting_object.avatrae}}"  {{setting_object.avatrae}}-->
@@ -96,20 +112,26 @@
       </script>
       </div>
       <br>
-
+    </td>
+    <td>
       <div class="container-fluid">
       {{form.as_p}}
 
       <!-- Email Template: -->
       <p>Define the email template:<p>
       <label for="email_template">Email Template:</label>
-      <input style="margin-left: 20px;" type="text" id="email_template" name="email_template" value={{setting_object.email_template}} size=50>
+      <input name="email_template" rows="8" cols="80" style="margin-left: 20px;" type="text" id="email_template" value={{setting_object.email_template}} size=50>
       <!--<textarea name="paragraph_text" cols="50" rows="10"> </textarea>-->
       <!--<textarea form ="settings_form" name="taname" id="taid" cols="35" wrap="soft" value={{setting_object.email_template}}></textarea>-->
-      <br>
-      <input type="submit" value="Save" class="btn btn-primary btn-lg">
-      <br>
       </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+<input type="submit" value="Save" class="btn btn-primary btn-lg">
+<br>
 
       <!-- Alerts of exceptions and succes-->
       {% if priority_range_exception %}

@@ -1,4 +1,6 @@
 from django.db import models
+from django.forms import ModelForm, Textarea
+
 
 class Plus500(models.Model):
     url_from = models.CharField(max_length=250, blank=True)
@@ -21,6 +23,9 @@ class Plus500(models.Model):
     category =  models.CharField(max_length=50, blank=True)
     url_domain = models.CharField(max_length=250, blank=True)
     contact_email = models.CharField(max_length=250, blank=True)
+    contact_email = models.CharField(max_length=250, blank=True)
+    send_email = models.BooleanField(default=False)
+    email_template2 = models.CharField(max_length=100000, blank=True)
 
     def __str__(self):
         return self.url_from
@@ -28,7 +33,7 @@ class Plus500(models.Model):
 class Emails_Sending(models.Model):
     contact_email = models.CharField(max_length=250, blank=True)
     send_email = models.BooleanField(default=False)
-    email_template2 = models.CharField(max_length=10000, null=True)
+    email_template2 = models.CharField(max_length=100000, blank=True)
 
 class Settings_table(models.Model):
     #id - the key of the object
@@ -49,7 +54,7 @@ class Settings_table(models.Model):
     IG = models.BooleanField(default=False)
     CMC_markets = models.BooleanField(default=False)
     #the email template
-    email_template = models.CharField(max_length=100000, null=True)
+    email_template = models.CharField(max_length=100000, blank=True)
     #last number of links:
     links_num = models.IntegerField(null=True)
 

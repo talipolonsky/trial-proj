@@ -9,6 +9,8 @@ from plus500.forms import *
 import csv
 from django.http import HttpResponse
 import datetime
+from django.core.mail import send_mail
+
 #from django.core.exceptions import ValidationError, SuspiciousOperation
 
 @login_required
@@ -93,6 +95,13 @@ def send_an_email(request):
     sending_email = Emails_Sending.objects.get(id__exact=1)
     if request.GET.get('send_email'):
         sending_email.send_email = request.GET.get('send_email')
+        send_mail(
+            'Subject here',
+            'Here is the message.',
+            'el1yarden@gmail.com',
+            ['el1yarden@gmail.com'],
+            fail_silently=False,
+        )
     setting_object.save()
     context.update({'send_email': send_email})
     return render(request, 'plus500/home.html', send_email)
