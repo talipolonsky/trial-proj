@@ -30,10 +30,10 @@ class Plus500(models.Model):
     def __str__(self):
         return self.url_from
 
-class Emails_Sending(models.Model):
-    contact_email = models.CharField(max_length=250, blank=True)
-    send_email = models.BooleanField(default=False)
-    email_template2 = models.CharField(max_length=100000, blank=True)
+# class Emails_Sending(models.Model):
+#     contact_email = models.CharField(max_length=250, blank=True)
+#     send_email = models.BooleanField(default=False)
+#     email_template2 = models.CharField(max_length=100000, blank=True)
 
 class Settings_table(models.Model):
     #id - the key of the object

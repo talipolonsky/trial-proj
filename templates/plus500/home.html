@@ -90,6 +90,16 @@
               <label style="margin-left: 10px;" for="total_num">Show all</label><br>
             </div>
           </td>
+    <td>                <!--Contact form-->
+        <h3>Send an Email</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="form-actions">
+              <button type="submit" class="btn mt-3 btn-primary" name="form-1-submit">Send</button>
+            </div>
+        </form>
+      </td>
         </tr>
       </tbody>
     </table>
@@ -126,7 +136,6 @@
       <th style="text-align: center;">Refdomains/Backlinks Ratio</th>
       <th style="text-align: center;">Link Category</th>
       <th scope="col">Website's Contacts Emails</th>
-      <th style="text-align: center;">Send an Email?</th>
     </tr>
   </thead>
 <tbody>
@@ -142,15 +151,6 @@
           <td>{{ link.refdomains_backlinks_ratio }} %</td>
           <td>{{ link.category }}</td>
           <td>{{ link.contact_email }}</td>
-        <td>
-          <form action="/send_an_email/" method="GET">
-            {% csrf_token %}
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value={{setting_object.send_email}} id="send_email" name="send_email">
-            <label class="form-check-label" for="send_email"></label>
-          </div>
-          </form>
-        </td>
       </tr>
     {% endfor %}
   </tbody>

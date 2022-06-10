@@ -1,11 +1,10 @@
 from django import forms
 from django.forms import ModelForm
-from plus500.models import Plus500, Settings_table, Emails_Sending
+from plus500.models import Plus500, Settings_table
 
-class StyleSettings(forms.ModelForm):
-    class Meta:
-        model = Settings_table
-        fields = ('domain_rating','domain_traffic','referringDomains_backlinks_ratio')
-        widgets={
+# Create your forms here.
 
-        }
+class ContactForm(forms.Form):
+    to_email = forms.EmailField(required=True)
+    subject = forms.CharField(required=True)
+    message = forms.CharField(widget=forms.Textarea, required=True)

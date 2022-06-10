@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from plus500.models import Plus500, Settings_table, Emails_Sending
+from plus500.models import Plus500, Settings_table
 import requests
 from django.views.generic import CreateView
 from django.contrib.auth.decorators import login_required
@@ -9,7 +9,11 @@ from plus500.forms import *
 import csv
 from django.http import HttpResponse
 import datetime
+from plus500.forms import ContactForm
 from django.core.mail import send_mail
+from django.shortcuts import render, redirect
+from django.core.mail import send_mail, BadHeaderError
+from django.http import HttpResponse
 
 #from django.core.exceptions import ValidationError, SuspiciousOperation
 
@@ -87,24 +91,44 @@ def home(request):
 
     selected_links = selected_links[:num_of_links]
     context.update({'selected_links': selected_links, 'num_of_links': num_of_links})
-    return render(request, 'plus500/home.html', context)
+
+    if 'form-1-submit' in request.POST:
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            to_email = form.cleaned_data['to_email']
+            message = form.cleaned_data['message']
+            try:
+                send_mail(subject, message, to_email, to_email)
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+            return redirect('success')
+    else:
+        form = ContactForm()
+
+    return render(request, 'plus500/home.html', {'context':context, 'form':form})
 
 @login_required
-def send_an_email(request):
-    #send flags of exceptions:
-    sending_email = Emails_Sending.objects.get(id__exact=1)
-    if request.GET.get('send_email'):
-        sending_email.send_email = request.GET.get('send_email')
-        send_mail(
-            'Subject here',
-            'Here is the message.',
-            'el1yarden@gmail.com',
-            ['el1yarden@gmail.com'],
-            fail_silently=False,
-        )
-    setting_object.save()
-    context.update({'send_email': send_email})
-    return render(request, 'plus500/home.html', send_email)
+# Create your views here.
+def homepage(request):
+	return render(request, "main/home.html")
+
+# @login_required
+# def contactView(request):
+#     if request.method == 'GET':
+#         form = ContactForm()
+#     else:
+#         form = ContactForm(request.POST)
+#         if form.is_valid():
+#             subject = form.cleaned_data['subject']
+#             from_email = form.cleaned_data['from_email']
+#             message = form.cleaned_data['message']
+#             try:
+#                 send_mail(subject, message, from_email, ['admin@example.com'])
+#             except BadHeaderError:
+#                 return HttpResponse('Invalid header found.')
+#             return redirect('success')
+#     return render(request, 'plus500/home.html', {'form': form})
 
 @login_required
 def settings(request):
