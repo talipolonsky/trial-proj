@@ -390,7 +390,6 @@ def get_data():
                 Plus500.objects.filter(url_from=url,competitor=target).update(refdomains_backlinks_ratio=ratio)
                 traffic_value =traffic_for_url(url)
                 Plus500.objects.filter(url_from=url,competitor=target).update(traffic=traffic_value)
-                the_url = "url"
                 contact_value = get_contact(url)
                 Plus500.objects.filter(url_from=url,competitor=target).update(contact_email=contact_value)
         except Exception as e: print(e)

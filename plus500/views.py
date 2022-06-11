@@ -77,16 +77,15 @@ def home(request):
     #explanation of -: selected_links = selected_links.order_by('-pub_date', 'headline')[:num_of_links]
     #he result above will be ordered by pub_date descending, then by headline ascending. The negative sign in front of "-pub_date" indicates descending order. Ascending order is implied.
     priority_dict = {setting_object.domain_rating_priority: '-domain_rating',
-                    setting_object.domain_traffic_priority: '-domain_traffic',
-                    setting_object.referringDomains_backlinks_ratio_priority: '-referringDomains_backlinks_ratio'}
+                    setting_object.domain_traffic_priority: 'traffic',
+                    setting_object.referringDomains_backlinks_ratio_priority: '-refdomains_backlinks_ratio'}
     #for key in sorted(priority_dict):
     try:
         first_order = priority_dict[0]
         second_order = priority_dict[1]
         third_order = priority_dict[2]
         selected_links = selected_links.order_by(first_order, second_order, third_order)
-    except:
-        print('unable to prioritiez the matrics')
+    except Exception as e: print(e)
     #selected_links = selected_links.order_by('-domain_rating_priority', '-domain_traffic_priority')[:num_of_links]
 
     selected_links = selected_links[:num_of_links]
@@ -106,12 +105,12 @@ def home(request):
     else:
         form = ContactForm()
 
-    return render(request, 'plus500/home.html', {'context':context, 'form':form})
+    return render(request, 'plus500/home.html', context)
 
-@login_required
+#@login_required
 # Create your views here.
-def homepage(request):
-	return render(request, "main/home.html")
+#def homepage(request):
+#	return render(request, "main/home.html")
 
 # @login_required
 # def contactView(request):
@@ -217,10 +216,10 @@ def settings(request):
 @login_required
 def export_to_csv(request):
     response =HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename= daily_data' + str(datetime.datetime.now()) + '.csv'
+    response['Content-Disposition'] = 'attachment; filename= Daily_Data' + str(datetime.datetime.now()) + '.csv'
     writer = csv.writer(response)
-    writer.writerow(['url_from','url_to','domain_rating','title','competitor','refdomains','traffic','refdomains_backlinks_ratio','category', 'url_domain','contact_email'])
+    writer.writerow(['Website where the Backlink is Found','Domain of the Website','The Competitor which the backlink is Pointing to','Competitor Domain','Domain Rating','Refdomains','Traffic','Refdomains/Backlinks Ratio', 'Website Category','Website Contacts Emails'])
     plus500 = Plus500.objects.all()
     for item in plus500:
-        writer.writerow([item.url_from, item.url_to, item.domain_rating,item.title,item.competitor,item.refdomains,item.traffic,item.refdomains_backlinks_ratio, item.category, item.url_domain, item.contact_email])
+        writer.writerow([item.url_from, item.url_domain, item.url_to,item.competitor,item.domain_rating,item.refdomains,item.traffic, item.refdomains_backlinks_ratio, item.category, item.contact_email])
     return response
