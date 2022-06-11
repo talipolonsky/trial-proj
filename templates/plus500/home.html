@@ -9,7 +9,23 @@
     padding: 10px 20px;
     font-size: 14px;
   }
-  .button_div, h1 {
+  .export_csv{
+    background-color: #000000;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 10px;
+    margin-left: 10px;
+
+  }
+  a.export_csv:hover{
+    background-color: #666666;
+    color: white;
+    text-decoration: none;
+
+  }
+  h1 {
     text-align:center;
   }
   table, td{
@@ -36,8 +52,6 @@
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
-
-
 </style>
 </head>
 
@@ -57,7 +71,7 @@
         <tr>
           <td>
             <fieldset>
-              <label for="news"><b>Choose categories:</b></label><br>
+              <label for="choose_categories" style="text-decoration: underline;"><b>Choose categories:</b></label><br>
               <input style="margin-left: 20px;" type="checkbox" id="news" name="news" value="News">
               <label for="news">News</label><br>
               <input style="margin-left: 20px;" type="checkbox" id="finance" name="finance" value="Finance">
@@ -81,32 +95,32 @@
                   }
                 }
               </script>
+          <br><br>
+          <input type="submit" value="Submit and Search" class="btn btn-primary btn-lg">
           </td>
           <td>
             <div>
-              <label for="selected_num"><b>Choose number of links:</b></label><br>
-              <input style="margin-left: 10px;" type="radio" name="radio" id="selected_num" value="selected_num" checked/><input style="width: 4em" type="number" name="links_num" value="{{num_of_links}}" placeholder="Type number..." /><br>
+              <label for="selected_num" style="text-decoration: underline;"><b>Choose number of links:</b></label><br>
+              <input style="margin-left: 10px;" type="radio" name="radio" id="selected_num" value="selected_num" checked/><input style="width: 9em" type="number" min=0 name="links_num" value="{{num_of_links}}" placeholder="Type number..." /><br>
               <input style="margin-left: 10px;" type="radio" name="radio" id="total_num" value="total_num"/>
               <label style="margin-left: 10px;" for="total_num">Show all</label><br>
             </div>
           </td>
-    <td>                <!--Contact form-->
-        <h3>Send an Email</h3>
+          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <!--Contact form-->
+        <td>
+        <label for="send_email" style="text-decoration: underline;"><b>Send an Email:</b></label><br>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <div class="form-actions">
-              <button type="submit" class="btn mt-3 btn-primary" name="form-1-submit">Send</button>
-            </div>
+            <input type="submit" value="Send" class="btn btn-primary btn-lg" name="form-1-submit">
         </form>
       </td>
         </tr>
       </tbody>
     </table>
     <!--<input type="submit" value="Submit and Search" class="btn btn-primary btn-lg">-->
-    <div class="button_div">
-      <input type="submit" value="Submit and Search" class="btn btn-primary btn-lg">
-    </div>
+
     <br>
     {% if links_num_exception %}
       <div class="alert alert-danger" role="alert">
@@ -120,15 +134,15 @@
   </form>
   </div>
 <br><br>
-<a href="{% url 'export-csv'   %}" class = "btn btn-secondary" >Save Current Data To CSV</a>
+<a href="{% url 'export-csv'%}" class = "export_csv" ><span class="material-symbols-outlined">download</span>Save Current Data to CSV</a>
 <br><br>
 <div class="container-fluid">
 <table class="second_table">
   <thead>
     <tr>
-      <th style="text-align: center;" >Website Where The Backlink Is Found</th>
-      <th style="text-align: center;">Domain of the website</th>
-      <th style="text-align: center;">The Competitor which the link is pointing to</th>
+      <th style="text-align: center;" >Website where the Backlink is Found</th>
+      <th style="text-align: center;">Domain of the Website</th>
+      <th style="text-align: center;">The Competitor which the Website is Pointing to</th>
       <th style="text-align: center;">Competitor Domain</th>
       <th style="text-align: center;">Domain Rating</th>
       <th style="text-align: center;">Refdomains</th>
