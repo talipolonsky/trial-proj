@@ -5,7 +5,7 @@
 <head>
 <title>SEO Link Analyzer: Login</title>
 {% load static %}
-<img src="{% static "plus500/LOGO.jpeg" %}" alt="home"  width="500" height="600"/>
+
   <style>
     .button{
       background-color: #90CAF9;
@@ -13,6 +13,13 @@
       border: none;
       padding: 10px 20px;
       border-radius: 10px;
+    }
+    .center{
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top:20px;
+      width: 50%;
     }
 
   </style>
@@ -24,7 +31,8 @@
   <p style="color:red; text-align:center;"> Your user/password didn't match </p>
 {% endif %}
 -->
-<h1 class = "text-center">Welcome to SEO Link Analyzer!</h1>
+<img src="{% static "plus500/logo_black_small.png" %}" alt="SEO Link Analyzer black logo" class="center" width="300" height="220" />
+<h1 class = "text-center" >Welcome to SEO Link Analyzer!</h1>
 <h4 class = "text-center">Please sign in to continue:</h4><br>
 <form class = "text-center" method="post" %>
   {% csrf_token %}
