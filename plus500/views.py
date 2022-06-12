@@ -104,7 +104,8 @@ def home(request):
             return redirect('success')
     else:
         form = ContactForm()
-
+        context.update({'form': form})
+        
     return render(request, 'plus500/home.html', context)
 
 #@login_required

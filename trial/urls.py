@@ -23,6 +23,7 @@ urlpatterns = [
     path('',auth_views.LoginView.as_view(), name="login"),
     path('home/',plus500_views.home, name="home"),
     path('export_to_csv',plus500_views.export_to_csv, name="export-csv"),
+    #path('contact_send_email',plus500_views.contact_send_email),
     path('settings/',plus500_views.settings, name="settings"),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', include ('plus500.urls'))
