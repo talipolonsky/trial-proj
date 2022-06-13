@@ -3,11 +3,15 @@
 <title>SEO Link Analyzer: Home</title>
 <style>
   input[type=submit]{
-    background-color: #90CAF9;
+    background-color: #4085C1;
     color: white;
     border: none;
     padding: 10px 20px;
     font-size: 14px;
+  }
+  input[type=submit]:hover{
+    background-color: #96C0E5;
+    color: white;
   }
   .export_csv{
     background-color: #000000;
@@ -20,7 +24,7 @@
 
   }
   a.export_csv:hover{
-    background-color: #666666;
+    background-color: #7F8C8D;
     color: white;
     text-decoration: none;
 
@@ -30,16 +34,19 @@
   }
   table, td{
     font-size: 15px;
-    background-color: #F5F5F5;
   }
   input[type=text] {
     border: none;
     border-bottom: 1px solid black;
     background-color: #F5F5F5;
   }
-  .first_table, .second_table{
+  .first_table{
     border-collapse: collapse;
     width: 100%;
+  }
+  .second_table{
+    table-layout: fixed;
+
   }
   .first_table th, .first_table td {
     padding: 8px;
@@ -52,6 +59,20 @@
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
+.second_table th, .second_table td {
+padding: 8px;
+text-align: left;
+border-bottom: 2px solid #ddd;
+border-left: 2px solid #ddd;
+}
+td:first-child, th:first-child {
+ border-left: none;
+}
+.second_table tr:hover{
+  background-color: #96C0E5;
+}
+
+
 </style>
 </head>
 
@@ -69,7 +90,7 @@
     <table class= "first_table">
       <tbody>
         <tr>
-          <td>
+          <td style="border-left: 2px solid #ddd;border-bottom: 2px solid #ddd;border-top: 2px solid #ddd;">
             <fieldset>
               <label for="choose_categories" style="text-decoration: underline;"><b>Choose categories:</b></label><br>
               <input style="margin-left: 20px;" type="checkbox" id="news" name="news" value="News">
@@ -95,10 +116,10 @@
                   }
                 }
               </script>
-          <br><br>
+          <br>
           <input type="submit" value="Submit and Search" class="btn btn-primary btn-lg">
           </td>
-          <td>
+          <td style="border-bottom: 2px solid #ddd;border-top: 2px solid #ddd;border-right: 2px solid #ddd;">
             <div>
               <label for="selected_num" style="text-decoration: underline;"><b>Choose number of links:</b></label><br>
               <input style="margin-left: 10px;" type="radio" name="radio" id="selected_num" value="selected_num" checked/><input style="width: 9em" type="number" min=0 name="links_num" value="{{num_of_links}}" placeholder="Type number..." /><br>
@@ -108,7 +129,7 @@
           </td>
           <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
         <!--Contact form-->
-        <td>
+        <td style="border-left: 2px solid #ddd;border-bottom: 2px solid #ddd;border-top: 2px solid #ddd;border-right: 2px solid #ddd;">
         <label for="send_email" style="text-decoration: underline;"><b>Send an Email:</b></label><br>
         <form method="post">
             {% csrf_token %}
@@ -149,13 +170,13 @@
       <th style="text-align: center;">Traffic</th>
       <th style="text-align: center;">Refdomains/Backlinks Ratio</th>
       <th style="text-align: center;">Website Category</th>
-      <th scope="col">Website's Contacts Emails</th>
+      <th scope="col" style="text-align: center;">Website's Contacts Emails</th>
     </tr>
   </thead>
 <tbody>
     {% for link in selected_links %}
-      <tr>
-        <td><a href="{{ link.url_from }}">{{link.title}}</a></td>
+        <tr>
+          <td><a href="{{ link.url_from }}">{{link.title}}</a></td>
           <td>{{ link.url_domain }}</td>
           <td>{{ link.url_to }}</td>
           <td>{{ link.competitor }}</td>
@@ -165,7 +186,7 @@
           <td>{{ link.refdomains_backlinks_ratio }} %</td>
           <td>{{ link.category }}</td>
           <td>{{ link.contact_email }}</td>
-      </tr>
+        </tr>
     {% endfor %}
   </tbody>
 </table>
