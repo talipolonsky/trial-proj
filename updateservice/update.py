@@ -337,21 +337,25 @@ def traffic_for_url(url_from):
     domain = urlparse(url_from).netloc
     domain = 'ahrefs.com'
     traffic_url = 'https://apiv2.ahrefs.com?from=positions_metrics&target=' + domain + '&mode=subdomains&output=json&token=082c4afc97f7348b730e5fc0b861a2ebd9ce522a'
-    traffic_response = requests.get(traffic_url)
-    traffic_data = traffic_response.json()
-    traffics = traffic_data['metrics']
-    traffic = traffics['traffic']
+    try:
+        traffic_response = requests.get(traffic_url)
+        traffic_data = traffic_response.json()
+        traffics = traffic_data['metrics']
+        traffic = traffics['traffic']
+    except Exception as e: print(e)
     return traffic
 
 def refdomain_for_url(url_from):
     domain = urlparse(url_from).netloc
     domain = 'ahrefs.com'
     refdomain_url = 'https://apiv2.ahrefs.com?from=refdomains_by_type&target=' + domain + '&mode=subdomains&limit=1&where=dofollow%3Dtrue&output=json&token=082c4afc97f7348b730e5fc0b861a2ebd9ce522a'
-    refdomain_response = requests.get(refdomain_url)
-    refdomain_data = refdomain_response.json()
-    all_refdomains_backlinks = refdomain_data['stats']
-    refdomain = all_refdomains_backlinks['refdomains']
-    all_backlinks = all_refdomains_backlinks['total_backlinks']
+    try:
+        refdomain_response = requests.get(refdomain_url)
+        refdomain_data = refdomain_response.json()
+        all_refdomains_backlinks = refdomain_data['stats']
+        refdomain = all_refdomains_backlinks['refdomains']
+        all_backlinks = all_refdomains_backlinks['total_backlinks']
+    except Exception as e: print(e)
     return refdomain, all_backlinks
 
 
