@@ -45,7 +45,9 @@ def home(request):
         all_categories = {"News": request.GET.get('news'),
              "Finance": request.GET.get('finance'),"Crypto": request.GET.get('crypto'),
              "Forex": request.GET.get('forex'),"Commodities": request.GET.get('commodities'),
-             "Leisure": request.GET.get('leisure'), "Other": request.GET.get('other')}
+             "Leisure": request.GET.get('leisure'), "Other": request.GET.get('other'),
+             "SEO": request.GET.get('other'), "Unable to Categorize": request.GET.get('other'),
+             "Blogspot": request.GET.get('other')}
 
         unselected_categories = []
         for category, bool_category in all_categories.items():
