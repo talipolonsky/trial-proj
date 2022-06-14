@@ -389,7 +389,7 @@ def get_data():
                 url_domain_value=urlparse(url).netloc
                 Plus500.objects.filter(url_from=url,competitor=target).update(url_domain=url_domain_value)
                 refdomain_value, backlinks_value =refdomain_for_url(url)
-                ratio = round(int(refdomain_value/backlinks_value), 8)*100
+                ratio = round(float(refdomain_value/backlinks_value), 8)*100
                 Plus500.objects.filter(url_from=url,competitor=target).update(refdomains=refdomain_value)
                 Plus500.objects.filter(url_from=url,competitor=target).update(refdomains_backlinks_ratio=ratio)
                 traffic_value =traffic_for_url(url)
