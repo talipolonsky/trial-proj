@@ -42,10 +42,10 @@ def home(request):
         #    setting_object.links_num = 100
 
         #selection of categories:
-        all_categories = {"news": request.GET.get('news'),
-             "finance": request.GET.get('finance'),"crypto": request.GET.get('crypto'),
-             "forex": request.GET.get('forex'),"commodities": request.GET.get('commodities'),
-             "leisure": request.GET.get('leisure')}
+        all_categories = {"News": request.GET.get('news'),
+             "Finance": request.GET.get('finance'),"Crypto": request.GET.get('crypto'),
+             "Forex": request.GET.get('forex'),"Commodities": request.GET.get('commodities'),
+             "Leisure": request.GET.get('leisure'), "Other": request.GET.get('other')}
 
         unselected_categories = []
         for category, bool_category in all_categories.items():
@@ -71,13 +71,14 @@ def home(request):
         selected_links = selected_links.exclude(competitor=unselected_competitor)
 
     # filter on minimum in each metric:
-    selected_links = selected_links.filter(domain_rating__gt=setting_object.domain_rating)
+    ratio = setting_object.referringDomains_backlinks_ratio/100 #need to add some fix and validation here
+    selected_links = selected_links.filter(domain_rating__gt=setting_object.domain_rating, traffic__gt=setting_object.domain_traffic, refdomains_backlinks_ratio__gt=ratio)
 
     #sorting by selected priorities:
     #explanation of -: selected_links = selected_links.order_by('-pub_date', 'headline')[:num_of_links]
     #he result above will be ordered by pub_date descending, then by headline ascending. The negative sign in front of "-pub_date" indicates descending order. Ascending order is implied.
     priority_dict = {setting_object.domain_rating_priority: '-domain_rating',
-                    setting_object.domain_traffic_priority: 'traffic',
+                    setting_object.domain_traffic_priority: '-traffic',
                     setting_object.referringDomains_backlinks_ratio_priority: '-refdomains_backlinks_ratio'}
     #for key in sorted(priority_dict):
     try:
@@ -105,7 +106,7 @@ def home(request):
     else:
         form = ContactForm()
         context.update({'form': form})
-        
+
     return render(request, 'plus500/home.html', context)
 
 #@login_required

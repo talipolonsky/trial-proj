@@ -105,12 +105,14 @@ td:first-child, th:first-child {
               <label for="commodities">Commodities</label><br>
               <input style="margin-left: 20px;" type="checkbox" id="leisure" name="leisure" value="Leisure">
               <label for="leisure">Leisure</label><br>
+              <input style="margin-left: 20px;" type="checkbox" id="other" name="other" value="other">
+              <label for="other">Other</label><br>
               <input style="margin-left: 20px;" type="checkbox" name="select-all" id="select-all" />
               <label for="select-all">Select all categories</label><br>
               </fieldset>
               <script language="JavaScript">
                 document.getElementById('select-all').onclick = function() {
-                  var checkboxes = document.querySelectorAll('input[id="news"], input[id="finance"], input[id="crypto"], input[id="forex"], input[id="commodities"], input[id="leisure"]');
+                  var checkboxes = document.querySelectorAll('input[id="news"], input[id="finance"], input[id="crypto"], input[id="forex"], input[id="commodities"], input[id="leisure"], input[id="other"]');
                   for (var checkbox of checkboxes) {
                     checkbox.checked = this.checked;
                   }
@@ -127,6 +129,7 @@ td:first-child, th:first-child {
               <label style="margin-left: 10px;" for="total_num">Show all</label><br>
             </div>
           </td>
+      </form>
           <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
         <!--Contact form-->
         <td style="border-left: 2px solid #ddd;border-bottom: 2px solid #ddd;border-top: 2px solid #ddd;border-right: 2px solid #ddd;">
@@ -152,7 +155,7 @@ td:first-child, th:first-child {
     <input type="text" id="links_num" name="links_num" value={{num_of_links}}><br>
     <br> -->
 
-  </form>
+
   </div>
 <br><br>
 <a href="{% url 'export-csv'%}" class = "export_csv" ><span class="material-symbols-outlined">download</span>Save Current Data to CSV</a>
