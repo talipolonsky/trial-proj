@@ -336,25 +336,27 @@ def get_category(site_url):
 def traffic_for_url(url_from):
     domain = urlparse(url_from).netloc
     domain = 'ahrefs.com'
-    traffic_url = 'https://apiv2.ahrefs.com?from=positions_metrics&target=' + domain + '&mode=subdomains&output=json&token=082c4afc97f7348b730e5fc0b861a2ebd9ce522a'
+    traffic_url = 'https://apiv2.ahrefs.com?from=positions_metrics&target=' + domain + '&mode=subdomains&output=json&token=4d14da8a860efa872008cd2240aa6db853c119da'
     try:
         traffic_response = requests.get(traffic_url)
         traffic_data = traffic_response.json()
         traffics = traffic_data['metrics']
         traffic = traffics['traffic']
+        traffic_top3 = traffics['traffic_top3']
+        traffic_top10 = traffics['traffic_top10']
     except Exception as e: print(e)
-    return traffic
+    return traffic, traffic_top3, traffic_top10
 
 def refdomain_for_url(url_from):
     domain = urlparse(url_from).netloc
     domain = 'ahrefs.com'
-    refdomain_url = 'https://apiv2.ahrefs.com?from=refdomains_by_type&target=' + domain + '&mode=subdomains&limit=1&where=dofollow%3Dtrue&output=json&token=082c4afc97f7348b730e5fc0b861a2ebd9ce522a'
+    refdomain_url = 'https://apiv2.ahrefs.com?from=refdomains_by_type&target=' + domain + '&mode=subdomains&limit=1&where=dofollow%3Dtrue&output=json&token=4d14da8a860efa872008cd2240aa6db853c119da'
     try:
         refdomain_response = requests.get(refdomain_url)
         refdomain_data = refdomain_response.json()
         all_refdomains_backlinks = refdomain_data['stats']
         refdomain = all_refdomains_backlinks['refdomains']
-        all_backlinks = all_refdomains_backlinks['total_backlinks']
+        all_backlinks = all_refdomains_backlinks['total_backlinks_dofollow']
     except Exception as e: print(e)
     return refdomain, all_backlinks
 
@@ -365,7 +367,7 @@ def get_data():
     target_list=['ahrefs.com']
     train() # the train of the category model
     for target in target_list:
-        url = 'https://apiv2.ahrefs.com?from=backlinks&target=' + target + '&mode=subdomains&limit=50&order_by=domain_rating%3Adesc&select=url_from,domain_rating,url_to,title&where=nofollow%3Dfalse&output=json&token=082c4afc97f7348b730e5fc0b861a2ebd9ce522a'
+        url = 'https://apiv2.ahrefs.com?from=backlinks&target=' + target + '&mode=subdomains&limit=50&order_by=domain_rating%3Adesc&select=url_from,domain_rating,url_to,title&where=nofollow%3Dfalse&output=json&token=4d14da8a860efa872008cd2240aa6db853c119da'
         try:
             response = requests.get(url)
             data = response.json()
@@ -392,8 +394,10 @@ def get_data():
                 ratio = round(float(refdomain_value/backlinks_value), 8)
                 Plus500.objects.filter(url_from=url,competitor=target).update(refdomains=refdomain_value)
                 Plus500.objects.filter(url_from=url,competitor=target).update(refdomains_backlinks_ratio=ratio)
-                traffic_value =traffic_for_url(url)
+                traffic_value, traffic_top3_value, traffic_top10_value = traffic_for_url(url)
                 Plus500.objects.filter(url_from=url,competitor=target).update(traffic=traffic_value)
+                Plus500.objects.filter(url_from=url,competitor=target).update(traffic_top3=traffic_top3_value)
+                Plus500.objects.filter(url_from=url,competitor=target).update(traffic_top10=traffic_top10_value)
                 contact_value = get_contact(url)
                 Plus500.objects.filter(url_from=url,competitor=target).update(contact_email=contact_value)
         except Exception as e: print(e)

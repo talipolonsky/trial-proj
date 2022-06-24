@@ -171,6 +171,8 @@ td:first-child, th:first-child {
       <th bgcolor="#D4D6D8" style="text-align: center;">Domain Rating</th>
       <th bgcolor="#D4D6D8" style="text-align: center;">Refdomains</th>
       <th bgcolor="#D4D6D8" style="text-align: center;">Traffic</th>
+      <th bgcolor="#D4D6D8" style="text-align: center;">Traffic TOP 3</th>
+      <th bgcolor="#D4D6D8" style="text-align: center;">Traffic TOP 10</th>
       <th bgcolor="#D4D6D8" style="text-align: center;">Refdomains/Backlinks Ratio</th>
       <th bgcolor="#D4D6D8" style="text-align: center;">Website Category</th>
       <th bgcolor="#D4D6D8" scope="col" style="text-align: center;">Website's Contacts Emails</th>
@@ -186,6 +188,8 @@ td:first-child, th:first-child {
           <td>{{ link.domain_rating }}</td>
           <td>{{ link.refdomains }}</td>
           <td>{{ link.traffic }}</td>
+          <td>{{ link.traffic_top3 }}</td>
+          <td>{{ link.traffic_top10 }}</td>
           <td>{{ link.refdomains_backlinks_ratio }} %</td>
           <td>{{ link.category }}</td>
           <td>{{ link.contact_email }}</td>

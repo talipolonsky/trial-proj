@@ -26,6 +26,8 @@ class Plus500(models.Model):
     contact_email = models.CharField(max_length=250, blank=True)
     send_email = models.BooleanField(default=False)
     email_template2 = models.CharField(max_length=100000, blank=True)
+    traffic_top3 = models.IntegerField(blank=True, null=True)
+    traffic_top10 = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.url_from
