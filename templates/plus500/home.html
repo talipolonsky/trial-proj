@@ -86,7 +86,8 @@ td:first-child, th:first-child {
   <h1>SEO Link Analyzer</h1>
   <br>
   <!--  number of links and CATEFORIES SELECTION -->
-  <form action="/home/" method="GET">
+  <form action="/home/" method="POST">
+    {% csrf_token %}
     <table class= "first_table">
       <tbody>
         <tr>
