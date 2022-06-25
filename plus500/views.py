@@ -10,10 +10,10 @@ import csv
 from django.http import HttpResponse
 import datetime
 from plus500.forms import ContactForm
-from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
+#import smtplib, ssl # try for python-email (ofir)
 
 #from django.core.exceptions import ValidationError, SuspiciousOperation
 
@@ -26,28 +26,30 @@ def home(request):
     #bringing all links from the DB and then filter them by category
     selected_links = Plus500.objects.all()
 
-    if request.GET.get('links_num'): #if the submit button has pressed
+    if request.method == 'POST': #if the submit button has pressed
+
         #updating the links_num in the settigns table if was tipped number of links:
         #if request.GET.get('selected_num'):
-        try:
-            num_links= int(request.GET.get('links_num'))
-            if num_links >= 0:
-                setting_object.links_num = num_links
-                setting_object.save()
-            else:
+        if request.POST.get('links_num') and "selected_num" in request.POST.get('radio'):
+            try:
+                num_links= int(request.POST.get('links_num'))
+                if num_links >= 0:
+                    setting_object.links_num = num_links
+                    setting_object.save()
+                else:
+                    context.update({'links_num_exception': True})
+            except:
                 context.update({'links_num_exception': True})
-        except:
-            context.update({'links_num_exception': True})
-        #else:
-        #    setting_object.links_num = 100
+        else:
+            setting_object.links_num = 50
 
         #selection of categories:
-        all_categories = {"News": request.GET.get('news'),
-             "Finance": request.GET.get('finance'),"Crypto": request.GET.get('crypto'),
-             "Forex": request.GET.get('forex'),"Commodities": request.GET.get('commodities'),
-             "Leisure": request.GET.get('leisure'), "Other": request.GET.get('other'),
-             "SEO": request.GET.get('other'), "Unable to Categorize": request.GET.get('other'),
-             "Blogspot": request.GET.get('other')}
+        all_categories = {"News": request.POST.get('news'),
+             "Finance": request.POST.get('finance'),"Crypto": request.POST.get('crypto'),
+             "Forex": request.POST.get('forex'),"Commodities": request.POST.get('commodities'),
+             "Leisure": request.POST.get('leisure'), "Other": request.POST.get('other'),
+             "SEO": request.POST.get('other'), "Unable to Categorize": request.POST.get('other'),
+             "Blogspot": request.POST.get('other')}
 
         unselected_categories = []
         for category, bool_category in all_categories.items():
@@ -94,6 +96,8 @@ def home(request):
     selected_links = selected_links[:num_of_links]
     context.update({'selected_links': selected_links, 'num_of_links': num_of_links})
 
+    #send_mail('try-ofir1', 'Here is the message', 'ofir797@walla.com', ['ofir797@walla.com', 'ofir70428@gmail.com'])
+
     if 'form-1-submit' in request.POST:
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -101,10 +105,10 @@ def home(request):
             to_email = form.cleaned_data['to_email']
             message = form.cleaned_data['message']
             try:
-                send_mail(subject, message, to_email, to_email)
+                send_mail(subject, message, to_email, [to_email])
             except BadHeaderError:
-                return HttpResponse('Invalid header found.')
-            return redirect('success')
+                return HttpResponse('Make sure all fields are entered and valid.')
+            #return redirect('success')
     else:
         form = ContactForm()
         context.update({'form': form})
