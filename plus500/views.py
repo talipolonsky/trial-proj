@@ -226,8 +226,8 @@ def export_to_csv(request):
     response =HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename= Daily_Data' + str(datetime.datetime.now()) + '.csv'
     writer = csv.writer(response)
-    writer.writerow(['Website where the Backlink is Found','Domain of the Website','The Competitor which the backlink is Pointing to','Competitor Domain','Domain Rating','Refdomains','Traffic','Refdomains/Backlinks Ratio', 'Website Category','Website Contacts Emails'])
+    writer.writerow(['Website where the Backlink is Found','Domain of the Website','The Competitor which the backlink is Pointing to','Competitor Domain','Domain Rating','Refdomains','Traffic','Traffic TOP 3','Traffic TOP 10','Refdomains/Backlinks Ratio', 'Website Category','Website Contacts Emails'])
     plus500 = Plus500.objects.all()
     for item in plus500:
-        writer.writerow([item.url_from, item.url_domain, item.url_to,item.competitor,item.domain_rating,item.refdomains,item.traffic, item.refdomains_backlinks_ratio, item.category, item.contact_email])
+        writer.writerow([item.url_from, item.url_domain, item.url_to,item.competitor,item.domain_rating,item.refdomains,item.traffic, item.traffic_top3,item.traffic_top10, item.refdomains_backlinks_ratio, item.category, item.contact_email])
     return response

@@ -78,7 +78,7 @@ def get_contact(url):
         if not link in new_urls and not link in processed_urls:
             new_urls.append(link)
     new = str(emails)
-    if len(emails) ==0:
+    if len(emails) ==0 or ".png" in emails:
         return "No emails were found"
     else:
         return new
@@ -335,7 +335,6 @@ def get_category(site_url):
 
 def traffic_for_url(url_from):
     domain = urlparse(url_from).netloc
-    domain = 'ahrefs.com'
     traffic_url = 'https://apiv2.ahrefs.com?from=positions_metrics&target=' + domain + '&mode=subdomains&output=json&token=4d14da8a860efa872008cd2240aa6db853c119da'
     try:
         traffic_response = requests.get(traffic_url)
@@ -349,7 +348,6 @@ def traffic_for_url(url_from):
 
 def refdomain_for_url(url_from):
     domain = urlparse(url_from).netloc
-    domain = 'ahrefs.com'
     refdomain_url = 'https://apiv2.ahrefs.com?from=refdomains_by_type&target=' + domain + '&mode=subdomains&limit=1&where=dofollow%3Dtrue&output=json&token=4d14da8a860efa872008cd2240aa6db853c119da'
     try:
         refdomain_response = requests.get(refdomain_url)
@@ -364,10 +362,10 @@ def refdomain_for_url(url_from):
 def get_data():
     all_links = {}
     Plus500.objects.all().delete()
-    target_list=['ahrefs.com']
+    target_list=['ig.com', 'robinhood.com', 'etoro.com' ,'atrade.co.il', 'cmcmarkets.com']
     train() # the train of the category model
     for target in target_list:
-        url = 'https://apiv2.ahrefs.com?from=backlinks&target=' + target + '&mode=subdomains&limit=50&order_by=domain_rating%3Adesc&select=url_from,domain_rating,url_to,title&where=nofollow%3Dfalse&output=json&token=4d14da8a860efa872008cd2240aa6db853c119da'
+        url = 'https://apiv2.ahrefs.com?from=backlinks&target=' + target + '&mode=subdomains&limit=10&order_by=domain_rating%3Adesc&select=url_from,domain_rating,url_to,title&where=nofollow%3Dfalse&output=json&token=4d14da8a860efa872008cd2240aa6db853c119da'
         try:
             response = requests.get(url)
             data = response.json()
