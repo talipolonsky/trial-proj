@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path,include
 from plus500 import views as plus500_views
 from django.contrib.auth import views as auth_views
+from updateservice import update
 
 urlpatterns = [
     path('admin/', admin.site.urls),

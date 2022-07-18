@@ -361,11 +361,11 @@ def refdomain_for_url(url_from):
 
 def get_data():
     all_links = {}
-    Plus500.objects.all().delete()
+    #Plus500.objects.all().delete()
     target_list=['ig.com', 'robinhood.com', 'etoro.com' ,'atrade.co.il', 'cmcmarkets.com']
     train() # the train of the category model
     for target in target_list:
-        url = 'https://apiv2.ahrefs.com?from=backlinks&target=' + target + '&mode=subdomains&limit=10&order_by=domain_rating%3Adesc&select=url_from,domain_rating,url_to,title&where=nofollow%3Dfalse&output=json&token=4d14da8a860efa872008cd2240aa6db853c119da'
+        url = 'https://apiv2.ahrefs.com?from=backlinks&target=' + target + '&mode=subdomains&order_by=domain_rating%3Adesc&select=url_from,domain_rating,url_to,title&where=nofollow%3Dfalse&output=json&token=4d14da8a860efa872008cd2240aa6db853c119da'
         try:
             response = requests.get(url)
             data = response.json()
