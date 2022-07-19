@@ -3,6 +3,6 @@ from updateservice import update
 
 def start():
     #scheduler = BackgroundScheduler({'apscheduler.job_defaults.max_instances': 10})
-    #scheduler.add_job(update.get_data,'interval', hours=2)
+    #scheduler.add_job(update.get_data,'interval', hours=15)
     #scheduler.start()
     return 0

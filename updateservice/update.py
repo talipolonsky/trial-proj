@@ -362,10 +362,10 @@ def refdomain_for_url(url_from):
 def get_data():
     all_links = {}
     #Plus500.objects.all().delete()
-    target_list=['ig.com', 'robinhood.com', 'etoro.com' ,'atrade.co.il', 'cmcmarkets.com']
-    train() # the train of the category model
+    target_list=['cmcmarkets.com']
+    #train() # the train of the category model
     for target in target_list:
-        url = 'https://apiv2.ahrefs.com?from=backlinks&target=' + target + '&mode=subdomains&order_by=domain_rating%3Adesc&select=url_from,domain_rating,url_to,title&where=nofollow%3Dfalse&output=json&token=4d14da8a860efa872008cd2240aa6db853c119da'
+        url = 'https://apiv2.ahrefs.com?from=backlinks&target=' + target + '&mode=subdomains&limit=50&order_by=domain_rating%3Adesc&select=url_from,domain_rating,url_to,title&where=nofollow%3Dfalse&output=json&token=4d14da8a860efa872008cd2240aa6db853c119da'
         try:
             response = requests.get(url)
             data = response.json()
@@ -383,9 +383,9 @@ def get_data():
                 )
                 link_data.save()
             for url in url_from_list:
-                url_list = [url]
-                category_pred = get_category(url_list)
-                Plus500.objects.filter(url_from=url,competitor=target).update(category=category_pred)
+                #url_list = [url]
+                #category_pred = get_category(url_list)
+                #Plus500.objects.filter(url_from=url,competitor=target).update(category=category_pred)
                 url_domain_value=urlparse(url).netloc
                 Plus500.objects.filter(url_from=url,competitor=target).update(url_domain=url_domain_value)
                 refdomain_value, backlinks_value =refdomain_for_url(url)
