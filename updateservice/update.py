@@ -151,7 +151,7 @@ def train():
                  'SEO Optimization',
                  'Premium Domain', 'website ranking', 'Domain', 'Google ads ', 'Ranking Factors', 'organic traffic', 'Attention Required! moz.com',
                  'Attention Required!', 'Attention Required!', 'Access Denied'],
-        'target': ['Blogspot', 'Blogspot', 'Blogspot', 'Blogspot', 'Blogspot', 'Blogspot', 'Blogspot', 'Blogspot', 'Commodities', 'Commodities', 'Commodities',
+        'target': ['Other', 'Other', 'Other', 'Other', 'Other', 'Other', 'Other', 'Other', 'Commodities', 'Commodities', 'Commodities',
                    'Commodities',
                    'Commodities', 'Commodities', 'Commodities', 'Commodities', 'Commodities', 'Commodities', 'Commodities', 'Commodities',
                    'Commodities',
@@ -171,9 +171,9 @@ def train():
                    'Leisure',
                    'Leisure', 'Leisure', 'Leisure', 'Leisure', 'Leisure', 'News', 'News', 'News', 'News', 'News', 'News', 'News', 'News', 'News', 'News', 'News',
                    'News',
-                   'News', 'News', 'News', 'News', 'News', 'News', 'News', 'News', 'SEO', 'SEO', 'SEO', 'SEO', 'SEO', 'SEO', 'SEO',
-                   'SEO', 'SEO',
-                   'SEO', 'SEO', 'SEO', 'SEO', 'SEO', 'SEO', 'SEO', 'SEO', 'SEO', 'Unable to Categorize', 'Unable to Categorize', 'Unable to Categorize']}
+                   'News', 'News', 'News', 'News', 'News', 'News', 'News', 'News', 'Other', 'Other', 'Other', 'Other', 'Other', 'Other', 'Other',
+                   'Other', 'Other',
+                   'Other', 'Other', 'Other', 'Other', 'Other', 'Other', 'Other', 'Other', 'Other', 'Other', 'Other', 'Other']}
 
     clean_text_train = []
     for val in dict_train['text']:
@@ -361,10 +361,13 @@ def refdomain_for_url(url_from):
 
 def get_data():
     all_links = {}
+    # for deleting wxicting data (for replacing it with fresh data) - please uncomment this row:
     #Plus500.objects.all().delete()
-    target_list=['cmcmarkets.com']
-    #train() # the train of the category model
+    #target_list=['robinhood.com','etoro.com','atrade.co.il', 'cmcmarkets.com','ig.com']
+    target_list=[]
+    train() # the train of the category model
     for target in target_list:
+        # we limit the num of rows with limit=50 , for limit for more rows change this number in the limit here:
         url = 'https://apiv2.ahrefs.com?from=backlinks&target=' + target + '&mode=subdomains&limit=50&order_by=domain_rating%3Adesc&select=url_from,domain_rating,url_to,title&where=nofollow%3Dfalse&output=json&token=4d14da8a860efa872008cd2240aa6db853c119da'
         try:
             response = requests.get(url)
@@ -383,9 +386,9 @@ def get_data():
                 )
                 link_data.save()
             for url in url_from_list:
-                #url_list = [url]
-                #category_pred = get_category(url_list)
-                #Plus500.objects.filter(url_from=url,competitor=target).update(category=category_pred)
+                url_list = [url]
+                category_pred = get_category(url_list)
+                Plus500.objects.filter(url_from=url,competitor=target).update(category=category_pred)
                 url_domain_value=urlparse(url).netloc
                 Plus500.objects.filter(url_from=url,competitor=target).update(url_domain=url_domain_value)
                 refdomain_value, backlinks_value =refdomain_for_url(url)

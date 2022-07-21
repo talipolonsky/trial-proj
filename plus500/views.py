@@ -41,7 +41,7 @@ def home(request):
             except:
                 context.update({'links_num_exception': True})
         else:
-            setting_object.links_num = 50
+            setting_object.links_num = 250
 
         #selection of categories:
         all_categories = {"News": request.POST.get('news'),
@@ -58,7 +58,7 @@ def home(request):
         for unselected_category in unselected_categories:
             selected_links = selected_links.exclude(category=unselected_category)
     else:
-        setting_object.links_num = 50
+        setting_object.links_num = 250
 
     num_of_links= setting_object.links_num
 
@@ -67,15 +67,26 @@ def home(request):
          "robinhood": setting_object.robinhood,"etoro": setting_object.etoro,
          "IG": setting_object.IG,"CMC_markets": setting_object.CMC_markets}
 
+    #exclude - filterout unselected competitors
+    #competitors = ['robinhood.com','etoro.com','atrade.co.il', 'cmcmarkets.com','ig.com']
     unselected_competitors = []
     for competitor, bool_competitor in all_competitors.items():
         if not bool_competitor:
-            unselected_competitors.append(competitor)
+            if competitor == "avatrae":
+                unselected_competitors.append('atrade.co.il')
+            elif competitor == "robinhood":
+                unselected_competitors.append('robinhood.com')
+            elif competitor == "etoro":
+                unselected_competitors.append('etoro.com')
+            elif competitor == "IG":
+                unselected_competitors.append('ig.com')
+            elif competitor == "CMC_markets":
+                unselected_competitors.append('cmcmarkets.com')
     for unselected_competitor in unselected_competitors:
         selected_links = selected_links.exclude(competitor=unselected_competitor)
 
     # filter on minimum in each metric:
-    ratio = setting_object.referringDomains_backlinks_ratio/100 #need to add some fix and validation here
+    ratio = setting_object.referringDomains_backlinks_ratio*100 #need to add some fix and validation here
     selected_links = selected_links.filter(domain_rating__gt=setting_object.domain_rating, traffic__gt=setting_object.domain_traffic, refdomains_backlinks_ratio__gt=ratio)
 
     #sorting by selected priorities:
@@ -161,7 +172,7 @@ def settings(request):
                 context.update({'domain_traffic_exception': True})
         if request.POST.get('RB_ratio'):
             try:
-                setting_object.referringDomains_backlinks_ratio = int(request.POST.get('RB_ratio'))
+                setting_object.referringDomains_backlinks_ratio = float(request.POST.get('RB_ratio'))/100 #insret in %
             except:
                 context.update({'RB_ratio_exception': True})
 
