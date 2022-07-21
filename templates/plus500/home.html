@@ -182,7 +182,7 @@ td:first-child, th:first-child {
 <tbody>
     {% for link in selected_links %}
         <tr>
-          <td><{{ link.url_from }}</td>
+          <td><a href="{{ link.url_from }}">{% if link.title %} {{link.title}} {% else %} {{ link.url_from }} {% endif %} </a></td>
           <td>{{ link.url_domain }}</td>
           <td>{{ link.url_to }}</td>
           <td>{{ link.competitor }}</td>
