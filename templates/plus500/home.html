@@ -94,21 +94,21 @@ td:first-child, th:first-child {
           <td style="border-left: 2px solid #ddd;border-bottom: 2px solid #ddd;border-top: 2px solid #ddd;">
             <fieldset>
               <label for="choose_categories" style="text-decoration: underline;"><b>Choose categories:</b></label><br>
-              <input style="margin-left: 20px;" type="checkbox" id="news" name="news" value="News">
+              <input style="margin-left: 20px;" type="checkbox" id="news" name="news" value="News" checked>
               <label for="news">News</label><br>
-              <input style="margin-left: 20px;" type="checkbox" id="finance" name="finance" value="Finance">
+              <input style="margin-left: 20px;" type="checkbox" id="finance" name="finance" value="Finance" checked>
               <label for="finance">Finance</label><br>
-              <input style="margin-left: 20px;" type="checkbox" id="crypto" name="crypto" value="Crypto">
+              <input style="margin-left: 20px;" type="checkbox" id="crypto" name="crypto" value="Crypto" checked>
               <label for="crypto">Crypto</label><br>
-              <input style="margin-left: 20px;" type="checkbox" id="forex" name="forex" value="Forex">
+              <input style="margin-left: 20px;" type="checkbox" id="forex" name="forex" value="Forex" checked>
               <label for="forex">Forex</label><br>
-              <input style="margin-left: 20px;" type="checkbox" id="commodities" name="commodities" value="Commodities">
+              <input style="margin-left: 20px;" type="checkbox" id="commodities" name="commodities" value="Commodities" checked>
               <label for="commodities">Commodities</label><br>
-              <input style="margin-left: 20px;" type="checkbox" id="leisure" name="leisure" value="Leisure">
+              <input style="margin-left: 20px;" type="checkbox" id="leisure" name="leisure" value="Leisure" checked>
               <label for="leisure">Leisure</label><br>
-              <input style="margin-left: 20px;" type="checkbox" id="other" name="other" value="other">
+              <input style="margin-left: 20px;" type="checkbox" id="other" name="other" value="other" checked>
               <label for="other">Other</label><br>
-              <input style="margin-left: 20px;" type="checkbox" name="select-all" id="select-all" />
+              <input style="margin-left: 20px;" type="checkbox" name="select-all" id="select-all" checked />
               <label for="select-all">Select all categories</label><br>
               </fieldset>
               <script language="JavaScript">
@@ -139,6 +139,18 @@ td:first-child, th:first-child {
             {% csrf_token %}
             {{ form.as_p }}
             <input type="submit" value="Send" class="btn btn-primary btn-lg" name="form-1-submit">
+            {% if email_succeed %}
+              <br>
+              <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">email send successfuly!</h4>
+              </div>
+            {% endif %}
+            {% if email_failed %}
+              <br>
+              <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">email didn't send successfuly, make sure emails are correct</h4>
+              </div>
+            {% endif %}
         </form>
       </td>
         </tr>
@@ -161,6 +173,7 @@ td:first-child, th:first-child {
 <br><br>
 <a href="{% url 'export-csv'%}" class = "export_csv" ><span class="material-symbols-outlined">download</span>Save Current Data to CSV</a>
 <br><br>
+<!--<form method="POST"> -->
 <div class="container-fluid">
 <table class="second_table">
   <thead>
@@ -177,6 +190,7 @@ td:first-child, th:first-child {
       <th bgcolor="#D4D6D8" style="text-align: center;">Refdomains/Backlinks Ratio</th>
       <th bgcolor="#D4D6D8" style="text-align: center;">Website Category</th>
       <th bgcolor="#D4D6D8" scope="col" style="text-align: center;">Website's Contacts Emails</th>
+      <!-- <th bgcolor="#D4D6D8" scope="col" style="text-align: center;">Send an Email?</th> -->
     </tr>
   </thead>
 <tbody>
@@ -194,9 +208,21 @@ td:first-child, th:first-child {
           <td>{{ link.refdomains_backlinks_ratio }} %</td>
           <td>{{ link.category }}</td>
           <td>{{ link.contact_email }}</td>
+          <!-- <td>
+            <form action="/send_an_email/" method="GET">
+              {% csrf_token %}
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value={{setting_object.send_email}} id="send_email" name="send_email">
+              <label class="form-check-label" for="send_email"></label>
+            </div>
+            </form>
+          </td> -->
         </tr>
     {% endfor %}
   </tbody>
+  <!--<br>
+  <input type="submit" value="Send an email" class="btn btn-primary btn-lg" name="email-form-submit">
+</form>-->
 </table>
 </div>
 
