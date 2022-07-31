@@ -11,16 +11,21 @@ from django.http import HttpResponse
 import datetime
 from plus500.forms import ContactForm
 from django.shortcuts import render, redirect
-from django.core.mail import send_mail, BadHeaderError
+#from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
 #import smtplib, ssl # try for python-email (ofir)
+#from django.conf import settings
+from django.core.mail import send_mail
+import smtplib, os #email try ofir
+from email.mime.multipart import MIMEMultipart #email try ofir
+from email.mime.text import MIMEText #email try ofir
 
 #from django.core.exceptions import ValidationError, SuspiciousOperation
 
 @login_required
 def home(request):
     # the dictionary we will return to home.html
-    context = {'links_num_exception': False} #flag if there is an exception in the num_links
+    context = {'links_num_exception': False, 'email_succeed': False, 'email_failed': False } #flag if there is an exception in the num_links
     #bringing the setting_object for the last saved links_num in settings
     setting_object = Settings_table.objects.get(id__exact=1)
     #bringing all links from the DB and then filter them by category
@@ -107,7 +112,10 @@ def home(request):
     selected_links = selected_links[:num_of_links]
     context.update({'selected_links': selected_links, 'num_of_links': num_of_links})
 
-    #send_mail('try-ofir1', 'Here is the message', 'ofir797@walla.com', ['ofir797@walla.com', 'ofir70428@gmail.com'])
+
+    #send_mail('try-ofir1', 'Here is the message', settings.EMAIL_HOST_USER, ['ofir797@walla.com', 'ofir70428@gmail.com'])
+
+    #if 'email-form-submit' in request.POST:
 
     if 'form-1-submit' in request.POST:
         form = ContactForm(request.POST)
@@ -116,10 +124,23 @@ def home(request):
             to_email = form.cleaned_data['to_email']
             message = form.cleaned_data['message']
             try:
-                send_mail(subject, message, to_email, [to_email])
+                #send_mail(subject, message, to_email, [to_email])
+                send_mail(
+                    subject = subject,
+                    message = message,
+                    from_email = '', # here need to insert email that the message will sent from
+                    recipient_list = [to_email],
+                    auth_user = 'Login',
+                    auth_password = '', # here need to insert password of the from_email
+                    fail_silently = False
+                    )
+                #context.update({'email_succeed': True})
             except BadHeaderError:
+                context.update({'email_failed': True})
                 return HttpResponse('Make sure all fields are entered and valid.')
             #return redirect('success')
+        form = ContactForm()
+        context.update({'form': form})
     else:
         form = ContactForm()
         context.update({'form': form})
