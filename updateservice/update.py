@@ -377,7 +377,7 @@ def get_data():
             for i in links:
                 url_from_1 = i['url_from']
                 if "play.google" in url_from_1 or "app.apple" in url_from_1:
-                    continue
+                    continues
                 url_from_list.append(url_from_1)
                 link_data = Plus500(
                     url_from = i['url_from'],
